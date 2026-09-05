@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPI: Jaringan Dasar - Biner & IPv4</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons for UI Elements -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Tone.js for Sound Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-animate { animation: fadeIn 0.2s ease-out forwards; }
+
+        /* Ensure hidden elements are truly hidden, overcoming flex displays */
+        .section-hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen text-slate-800 flex flex-col justify-between">
+
+    <!-- Header Navigation -->
+    <header class="glass shadow-sm z-50 p-4 shrink-0 flex justify-between items-center relative">
+        <div class="flex items-center gap-3">
+            <div class="bg-blue-600 text-white p-2 rounded-xl">
+                <i class="ph ph-network text-3xl"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold leading-none text-slate-800">Jaringan Dasar</h1>
+                <p class="text-sm text-slate-500 font-medium">Biner & IPv4</p>
+            </div>
+        </div>
+        <nav class="flex gap-2 bg-slate-100 p-1 rounded-2xl">
+            <button onclick="playSound('click'); navigate('materi')" id="nav-materi" class="nav-btn px-6 py-3 rounded-xl font-semibold text-slate-500 hover:text-blue-600 hover:bg-white transition-all">📖 Materi</button>
+            <button onclick="playSound('click'); navigate('simulasi')" id="nav-simulasi" class="nav-btn px-6 py-3 rounded-xl font-semibold text-slate-500 hover:text-blue-600 hover:bg-white transition-all">💡 Simulasi</button>
+            <button onclick="playSound('click'); navigate('game')" id="nav-game" class="nav-btn px-6 py-3 rounded-xl font-semibold text-slate-500 hover:text-blue-600 hover:bg-white transition-all">🏎️ Biner Ngebut</button>
+            <button onclick="playSound('click'); navigate('kuis')" id="nav-kuis" class="nav-btn px-6 py-3 rounded-xl font-semibold text-slate-500 hover:text-blue-600 hover:bg-white transition-all">📝 Kuis</button>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6 md:p-10 overflow-y-auto">
+        
+        <!-- SECTION: MATERI -->
+        <section id="sec-materi" class="max-w-6xl mx-auto space-y-8 pb-20 block">
+            <div class="text-center space-y-3">
+                <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Modul Pembelajaran Kelas X</span>
+                <h2 class="text-4xl font-extrabold text-slate-800">Memahami Bilangan Biner & Alamat IPv4</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Dasar utama bagaimana komputer berkomunikasi menggunakan sistem bilangan berbasis 2 dan penerapannya pada jaringan komputer.</p>
+            </div>
+
+            <!-- Grid Materi -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Card 1: Literasi Biner -->
+                <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                            <i class="ph ph-cpu"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">1. Konsep Dasar Sistem Biner</h3>
+                        <p class="text-slate-600 leading-relaxed mb-4">
+                            Komputer tidak mengerti angka desimal seperti manusia (0-9). Komputer bekerja menggunakan sirkuit elektronik digital yang hanya mengenal dua keadaan: <strong>Hidup (1)</strong> atau <strong>Mati (0)</strong>. Sistem ini disebut dengan <em>Bilangan Biner</em> (Basis 2).
+                        </p>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm space-y-2">
+                            <p class="font-semibold text-slate-700">💡 Literasi & Numerasi:</p>
+                            <p class="text-slate-600">Setiap digit biner disebut <strong>Bit</strong>. 1 Byte terdiri dari 8 Bit. Nilai tempat dihitung dari kanan ke kiri sebagai perpangkatan 2 ($2^0, 2^1, 2^2, \dots, 2^7$), yaitu: <strong>128, 64, 32, 16, 8, 4, 2, 1</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Numerasi IPv4 -->
+                <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                            <i class="ph ph-globe-hemisphere-east"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">2. Alamat IPv4 & Konversi</h3>
+                        <p class="text-slate-600 leading-relaxed mb-4">
+                            IPv4 (Internet Protocol version 4) terdiri dari <strong>32 bit</strong> yang dibagi menjadi 4 oktet (masing-masing 8 bit). Setiap oktet dipisahkan oleh titik (contoh: <code>192.168.1.1</code>).
+                        </p>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm space-y-2">
+                            <p class="font-semibold text-slate-700">🔢 Contoh Konversi Desimal ke Biner:</p>
+                            <p class="text-slate-600">Nilai desimal <strong>192</strong> jika diubah ke biner 8-bit menjadi:</p>
+                            <div class="font-mono bg-white p-2 rounded border text-center font-bold text-blue-600">
+                                11000000 <span class="text-xs font-normal text-slate-500">(128 + 64 + 0 + 0 + 0 + 0 + 0 + 0)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center pt-8">
+                <button onclick="playSound('click'); navigate('simulasi')" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-xl font-bold shadow-lg shadow-blue-200 transition-all transform hover:-translate-y-1">
+                    Coba Simulasi Sekarang <i class="ph ph-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION: SIMULASI -->
+        <section id="sec-simulasi" class="max-w-6xl mx-auto space-y-8 section-hidden h-full flex flex-col justify-center">
+            
+            <div class="text-center space-y-2 mb-8">
+                <h2 class="text-3xl font-extrabold text-slate-800">Simulasi Lampu Biner (8-Bit)</h2>
+                <p class="text-slate-600">Klik sakelar di bawah untuk menyalakan atau mematikan lampu. Amati bagaimana nilai desimalnya dihitung secara otomatis!</p>
+            </div>
+
+            <!-- Simulation Board -->
+            <div class="bg-gradient-to-r from-slate-900 to-indigo-950 p-8 md:p-12 rounded-3xl shadow-2xl text-white flex flex-col items-center relative overflow-hidden">
+                <!-- Background Glow -->
+                <div class="absolute -top-24 -left-24 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl"></div>
+
+                <!-- Display Result Container -->
+                <div class="text-center mb-10 z-10">
+                    <p class="text-slate-400 text-sm font-medium uppercase tracking-widest mb-1">Total Nilai Desimal</p>
+                    <div id="sim-total" class="text-6xl md:text-8xl font-black font-mono tracking-wider text-yellow-400 drop-shadow-[0_0_20px_rgba(250,204,21,0.5)]">
+                        0
+                    </div>
+                    <div id="sim-formula" class="text-sm md:text-base font-mono text-slate-300 mt-2">
+                        0
+                    </div>
+                </div>
+
+                <!-- Bulbs and Switches Grid -->
+                <div class="grid grid-cols-4 md:grid-cols-8 gap-4 md:gap-6 w-full max-w-5xl z-10" id="sim-container">
+                    <!-- Injected by JS -->
+                </div>
+
+                <button onclick="playSound('reset'); resetSim()" class="mt-8 bg-white/10 hover:bg-white/20 text-white border border-white/30 px-6 py-3 rounded-full text-lg font-medium transition-all relative z-10">
+                    <i class="ph ph-arrow-counter-clockwise mr-2"></i> Reset Lampu
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION: GAME MULTIPLAYER -->
+        <section id="sec-game" class="max-w-[1400px] mx-auto section-hidden h-full flex-col">
+            <div class="text-center mb-6 shrink-0">
+                <h2 class="text-3xl font-extrabold text-slate-800">Biner Ngebut 🏎️💨</h2>
+                <p class="text-slate-600">Mode Multiplayer PID: Adu cepat ubah angka desimal target menjadi biner! Siapa yang cepat sampai garis finish menang!</p>
+            </div>
+
+            <!-- Race Track Arena -->
+            <div class="bg-slate-900 rounded-3xl p-6 text-white shadow-2xl relative overflow-hidden mb-6 shrink-0 border border-slate-800">
+                <div class="absolute inset-0 flex items-center justify-between px-12 pointer-events-none opacity-20">
+                    <div class="border-r-4 border-dashed border-white h-full"></div>
+                    <div class="border-r-4 border-dashed border-white h-full"></div>
+                    <div class="border-r-4 border-dashed border-white h-full"></div>
+                    <div class="border-r-4 border-dashed border-white h-full"></div>
+                </div>
+
+                <!-- Target Header -->
+                <div class="text-center mb-4 relative z-10">
+                    <span class="text-xs uppercase tracking-widest text-slate-400 font-bold">Target Desimal</span>
+                    <div id="game-target" class="text-5xl md:text-6xl font-black font-mono text-yellow-400">--</div>
+                </div>
+
+                <!-- Player 1 Car Track -->
+                <div class="mb-4 relative">
+                    <div class="flex justify-between text-xs text-red-400 font-bold mb-1">
+                        <span>Pemain 1 (Merah)</span>
+                        <span id="p1-score-txt">Skor: 0</span>
+                    </div>
+                    <div class="h-14 bg-slate-800 rounded-xl relative overflow-hidden flex items-center border border-slate-700">
+                        <div id="p1-car" class="absolute left-2 text-4xl transition-all duration-300 transform translate-x-0 scale-x-[-1]">
+                            🏎️
+                        </div>
+                        <div class="absolute right-4 text-2xl opacity-50">🏁</div>
+                    </div>
+                </div>
+
+                <!-- Player 2 Car Track -->
+                <div class="relative">
+                    <div class="flex justify-between text-xs text-blue-400 font-bold mb-1">
+                        <span>Pemain 2 (Biru)</span>
+                        <span id="p2-score-txt">Skor: 0</span>
+                    </div>
+                    <div class="h-14 bg-slate-800 rounded-xl relative overflow-hidden flex items-center border border-slate-700">
+                        <div id="p2-car" class="absolute left-2 text-4xl transition-all duration-300 transform translate-x-0 scale-x-[-1]">
+                            🚗
+                        </div>
+                        <div class="absolute right-4 text-2xl opacity-50">🏁</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Split Controls for Multiplayer PID -->
+            <div class="grid md:grid-cols-2 gap-6 flex-1">
+                <!-- Player 1 Controller Panel -->
+                <div class="bg-red-50 border-2 border-red-200 p-6 rounded-3xl flex flex-col justify-between shadow-lg">
+                    <div class="text-center mb-4">
+                        <h3 class="text-xl font-bold text-red-600">Kontrol Pemain 1</h3>
+                        <p class="text-xs text-slate-500">Klik sakelar untuk sesuaikan bit, lalu tekan GAS!</p>
+                    </div>
+                    <div>
+                        <div class="grid grid-cols-4 gap-3 lg:gap-4 mb-8" id="p1-controls">
+                            <!-- Injected by JS -->
+                        </div>
+                        <button onclick="checkGameAnswer(1)" class="w-full max-w-sm mx-auto block bg-red-600 hover:bg-red-700 text-white py-6 rounded-2xl text-4xl font-black shadow-[0_8px_0_#991b1b] active:shadow-[0_0px_0_#991b1b] active:translate-y-2 transition-all">
+                            GAS! 🏁
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Player 2 Controller Panel -->
+                <div class="bg-blue-50 border-2 border-blue-200 p-6 rounded-3xl flex flex-col justify-between shadow-lg">
+                    <div class="text-center mb-4">
+                        <h3 class="text-xl font-bold text-blue-600">Kontrol Pemain 2</h3>
+                        <p class="text-xs text-slate-500">Klik sakelar untuk sesuaikan bit, lalu tekan GAS!</p>
+                    </div>
+                    <div>
+                        <div class="grid grid-cols-4 gap-3 lg:gap-4 mb-8" id="p2-controls">
+                            <!-- Injected by JS -->
+                        </div>
+                        <button onclick="checkGameAnswer(2)" class="w-full max-w-sm mx-auto block bg-blue-600 hover:bg-blue-700 text-white py-6 rounded-2xl text-4xl font-black shadow-[0_8px_0_#1e40af] active:shadow-[0_0px_0_#1e40af] active:translate-y-2 transition-all">
+                            GAS! 🏁
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: KUIS & SERTIFIKAT -->
+        <section id="sec-kuis" class="max-w-4xl mx-auto section-hidden pb-20">
+            <div class="text-center space-y-4 mb-10">
+                <h2 class="text-4xl font-extrabold text-slate-800">Kuis Evaluasi</h2>
+                <p class="text-slate-600">Jawab 5 pertanyaan berikut untuk menguji pemahaman Anda. Dapatkan nilai minimal 80 untuk mencetak sertifikat!</p>
+            </div>
+
+            <!-- Configuration for Teacher (Apps Script) -->
+            <div class="bg-yellow-50 border border-yellow-200 p-6 rounded-2xl mb-8 flex flex-col md:flex-row items-center gap-4">
+                <div class="text-yellow-600 text-4xl shrink-0"><i class="ph ph-warning-circle"></i></div>
+                <div class="flex-1 w-full">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold text-yellow-800">Pengaturan Guru (Opsional)</h4>
+                            <p class="text-sm text-yellow-700 mb-3">Masukkan URL Web App dari Google Apps Script untuk merekap nilai siswa ke Google Sheets.</p>
+                        </div>
+                        <button onclick="showAppsScriptInstructions()" class="bg-yellow-200 hover:bg-yellow-300 text-yellow-800 px-3 py-1 rounded-lg text-sm font-semibold transition-colors flex items-center gap-1">
+                            <i class="ph ph-info"></i> Cara Buat Script
+                        </button>
+                    </div>
+                    <input type="text" id="apps-script-url" placeholder="https://script.google.com/macros/s/..." class="w-full p-3 rounded-lg border border-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 text-sm">
+                </div>
+            </div>
+
+            <!-- Quiz Container -->
+            <div id="quiz-card" class="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-slate-100">
+                <!-- Step 1: Input Name -->
+                <div id="quiz-login" class="space-y-6 text-center max-w-md mx-auto">
+                    <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-3xl mx-auto flex items-center justify-center text-4xl">
+                        <i class="ph ph-user-circle"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-2">Masukkan Identitas</h3>
+                        <p class="text-slate-500 text-sm">Silakan ketik nama lengkap Anda sebelum memulai kuis.</p>
+                    </div>
+                    <input type="text" id="student-name" placeholder="Nama Lengkap Siswa" class="w-full p-4 border rounded-2xl text-center text-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    <button onclick="startQuiz()" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-2xl font-bold text-lg shadow-lg shadow-blue-200 transition-all">
+                        Mulai Kuis 🚀
+                    </button>
+                </div>
+
+                <!-- Step 2: Question Box -->
+                <div id="quiz-box" class="hidden space-y-6">
+                    <div class="flex justify-between items-center text-sm font-semibold text-slate-400 border-b pb-4">
+                        <span id="quiz-progress">Pertanyaan 1 dari 5</span>
+                        <span id="quiz-score-tracker">Skor: 0</span>
+                    </div>
+                    <h3 id="quiz-question" class="text-xl md:text-2xl font-bold text-slate-800"></h3>
+                    <div id="quiz-options" class="grid gap-4">
+                        <!-- Options injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Step 3: Result & Certificate -->
+                <div id="quiz-result" class="hidden text-center space-y-6">
+                    <div class="w-24 h-24 bg-green-100 text-green-600 rounded-full mx-auto flex items-center justify-center text-5xl">
+                        <i class="ph ph-trophy"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-extrabold text-slate-800 mb-2">Kuis Selesai!</h3>
+                        <p id="final-score-text" class="text-lg text-slate-600"></p>
+                    </div>
+                    <div id="certificate-box" class="hidden bg-slate-50 border-2 border-dashed border-slate-300 p-8 rounded-3xl max-w-xl mx-auto text-left relative overflow-hidden">
+                        <div class="text-center space-y-2">
+                            <h4 class="text-xs uppercase tracking-widest text-blue-600 font-bold">Sertifikat Kelulusan</h4>
+                            <h2 class="text-2xl font-black text-slate-800">Kompetensi Biner & IPv4</h2>
+                            <p class="text-xs text-slate-500">Diberikan kepada:</p>
+                            <p id="cert-name" class="text-xl font-bold text-slate-900 border-b border-slate-200 pb-2 inline-block min-w-[200px]"></p>
+                            <p class="text-xs text-slate-600 pt-2">Telah berhasil menyelesaikan pembelajaran dan kuis Jaringan Dasar dengan hasil memuaskan.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <button onclick="downloadCertificate()" id="btn-cert" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center gap-2">
+                            <i class="ph ph-download-simple"></i> Download Sertifikat
+                        </button>
+                        <button onclick="resetQuiz()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-6 py-3 rounded-xl font-bold transition-all">
+                            Ulangi Kuis
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-400 border-t border-slate-200 shrink-0">
+        Media Pembelajaran Interaktif Jaringan Dasar • Kelas X Teknik Komputer dan Jaringan
+    </footer>
+
+    <!-- Notification Toast Modal -->
+    <div id="toast-modal" class="fixed inset-0 bg-black/50 z-[100] hidden items-center justify-center backdrop-blur-sm">
+        <div class="bg-white p-8 rounded-3xl max-w-sm w-full text-center shadow-2xl modal-animate border-t-8" id="toast-content">
+            <div id="toast-icon" class="text-6xl mb-4"></div>
+            <h3 id="toast-title" class="text-2xl font-bold mb-2"></h3>
+            <p id="toast-msg" class="text-slate-600 mb-6"></p>
+            <button onclick="closeToast()" class="bg-slate-800 text-white px-8 py-3 rounded-xl font-bold w-full hover:bg-slate-700">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Apps Script Instructions Modal -->
+    <div id="script-instructions-modal" class="fixed inset-0 bg-black/50 z-[100] hidden items-center justify-center backdrop-blur-sm p-4">
+        <div class="bg-white p-8 rounded-3xl max-w-2xl w-full shadow-2xl modal-animate max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                    <i class="ph-fill ph-google-logo text-blue-500"></i> Cara Menghubungkan ke Google Sheets
+                </h3>
+                <button onclick="closeAppsScriptInstructions()" class="text-slate-400 hover:text-red-500"><i class="ph ph-x text-2xl"></i></button>
+            </div>
+            
+            <div class="space-y-4 text-slate-600">
+                <p>Ikuti langkah ini untuk membuat sistem rekap nilai otomatis menggunakan Google Apps Script:</p>
+                <ol class="list-decimal list-inside space-y-3 ml-2">
+                    <li>Buka <a href="https://sheets.google.com" target="_blank" class="text-blue-600 underline font-semibold">Google Sheets</a> dan buat spreadsheet baru (misal: "Rekap Nilai Jaringan Dasar").</li>
+                    <li>Buat header pada baris pertama kolom A, B, C, D: <strong>Nama</strong>, <strong>Materi</strong>, <strong>Nilai</strong>, <strong>Tanggal</strong>.</li>
+                    <li>Klik menu <strong>Ekstensi</strong> > <strong>Apps Script</strong>.</li>
+                    <li>Hapus semua kode yang ada, lalu paste kode di bawah ini:</li>
+                </ol>
+                
+                <div class="bg-slate-800 text-green-400 p-4 rounded-xl text-sm font-mono overflow-x-auto relative">
+                    <button onclick="copyScriptCode()" class="absolute top-2 right-2 bg-slate-700 hover:bg-slate-600 text-white p-2 rounded text-xs">Copy</button>
+                    <pre id="script-code">function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var nama = e.parameter.nama;
+  var materi = e.parameter.materi;
+  var nilai = e.parameter.nilai;
+  var tanggal = e.parameter.tanggal;
+  
+  sheet.appendRow([nama, materi, nilai, tanggal]);
+  
+  return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
+}</pre>
+                </div>
+                
+                <ol class="list-decimal list-inside space-y-3 ml-2" start="5">
+                    <li>Klik tombol <strong>Simpan</strong> (ikon disket).</li>
+                    <li>Klik tombol <strong>Terapkan (Deploy)</strong> > <strong>Deployment Baru</strong>.</li>
+                    <li>Pilih jenis <strong>Aplikasi Web (Web App)</strong>.</li>
+                    <li>Beri deskripsi. Pada bagian <em>"Yang memiliki akses"</em>, pilih <strong>"Siapa saja (Anyone)"</strong>.</li>
+                    <li>Klik <strong>Terapkan</strong>. Berikan izin otorisasi jika diminta (Lanjutkan > Buka tidak aman).</li>
+                    <li>Copy <strong>URL Aplikasi Web</strong> yang muncul, lalu paste ke kotak input di halaman Kuis MPI ini.</li>
+                </ol>
+            </div>
+            <div class="mt-8 pt-4 border-t text-right">
+                <button onclick="closeAppsScriptInstructions()" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700">Saya Mengerti</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- SOUND EFFECTS (Tone.js) ---
+        let synth;
+        let isToneStarted = false;
+
+        async function initAudio() {
+            if (!isToneStarted) {
+                await Tone.start();
+                synth = new Tone.Synth().toDestination();
+                synth.volume.value = -10;
+                isToneStarted = true;
+            }
+        }
+
+        document.body.addEventListener('click', initAudio, { once: true });
+        document.body.addEventListener('touchstart', initAudio, { once: true });
+
+        function playSound(type) {
+            if (!isToneStarted || !synth) return;
+            
+            try {
+                switch (type) {
+                    case 'click':
+                        synth.triggerAttackRelease("C5", "32n");
+                        break;
+                    case 'bulb-on':
+                        synth.triggerAttackRelease("E5", "16n");
+                        break;
+                    case 'bulb-off':
+                        synth.triggerAttackRelease("A4", "32n");
+                        break;
+                    case 'reset':
+                        synth.triggerAttackRelease("G3", "8n");
+                        break;
+                    case 'game-switch':
+                        synth.triggerAttackRelease("C6", "32n");
+                        break;
+                    case 'gas':
+                        synth.triggerAttackRelease("C2", "4n");
+                        setTimeout(() => synth.triggerAttackRelease("E2", "8n"), 150);
+                        break;
+                    case 'correct':
+                        synth.triggerAttackRelease("C5", "16n", Tone.now());
+                        synth.triggerAttackRelease("E5", "16n", Tone.now() + 0.1);
+                        synth.triggerAttackRelease("G5", "8n", Tone.now() + 0.2);
+                        break;
+                    case 'wrong':
+                        synth.triggerAttackRelease("G3", "8n", Tone.now());
+                        synth.triggerAttackRelease("C3", "4n", Tone.now() + 0.2);
+                        break;
+                }
+            } catch (e) {
+                console.log("Audio playback issue:", e);
+            }
+        }
+
+        // --- UTILS & NAVIGATION ---
+        const sections = ['materi', 'simulasi', 'game', 'kuis'];
+        
+        function navigate(target) {
+            sections.forEach(sec => {
+                const el = document.getElementById(`sec-${sec}`);
+                el.classList.add('section-hidden');
+                
+                document.getElementById(`nav-${sec}`).classList.remove('bg-white', 'text-blue-600', 'shadow-sm');
+                document.getElementById(`nav-${sec}`).classList.add('text-slate-500');
+            });
+            
+            const targetEl = document.getElementById(`sec-${target}`);
+            targetEl.classList.remove('section-hidden');
+            
+            if(target === 'simulasi' || target === 'game') {
+                targetEl.classList.add('flex');
+                targetEl.classList.remove('block');
+            } else {
+                targetEl.classList.add('block');
+                targetEl.classList.remove('flex');
+            }
+            
+            document.getElementById(`nav-${target}`).classList.add('bg-white', 'text-blue-600', 'shadow-sm');
+            document.getElementById(`nav-${target}`).classList.remove('text-slate-500');
+        }
+
+        // --- SIMULASI LOGIC ---
+        const bitValues = [128, 64, 32, 16, 8, 4, 2, 1];
+        let simState = [0,0,0,0,0,0,0,0];
+
+        function renderSimul() {
+            const container = document.getElementById('sim-container');
+            container.innerHTML = '';
+            
+            let total = 0;
+            let activeTerms = [];
+
+            simState.forEach((val, idx) => {
+                if (val === 1) {
+                    total += bitValues[idx];
+                    activeTerms.push(bitValues[idx]);
+                }
+
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-2xl flex flex-col items-center justify-between border transition-all cursor-pointer ${
+                    val === 1 
+                    ? 'bg-blue-600/30 border-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.3)]' 
+                    : 'bg-slate-800/50 border-slate-700 opacity-60 hover:opacity-100'
+                }`;
+                card.onclick = () => toggleSimBulb(idx);
+
+                card.innerHTML = `
+                    <span class="text-xs font-mono text-slate-400">Bit ${7-idx}</span>
+                    <div class="my-4 text-4xl transition-transform transform ${val === 1 ? 'scale-125 text-yellow-300 drop-shadow-[0_0_10px_yellow]' : 'text-slate-500'}">
+                        <i class="ph-fill ${val === 1 ? 'ph-lightbulb' : 'ph-lightbulb-slash'}"></i>
+                    </div>
+                    <span class="text-xl font-bold font-mono mb-2">${bitValues[idx]}</span>
+                    <div class="w-full py-2 rounded-lg font-mono text-xs font-bold text-center ${val === 1 ? 'bg-yellow-400 text-slate-950' : 'bg-slate-700 text-slate-300'}">
+                        ${val}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById('sim-total').innerText = total;
+            document.getElementById('sim-formula').innerText = activeTerms.length > 0 ? activeTerms.join(' + ') + ' = ' + total : '0';
+        }
+
+        function toggleSimBulb(idx) {
+            simState[idx] = simState[idx] === 0 ? 1 : 0;
+            if (simState[idx] === 1) {
+                playSound('bulb-on');
+            } else {
+                playSound('bulb-off');
+            }
+            renderSimul();
+        }
+
+        function resetSim() {
+            simState = [0,0,0,0,0,0,0,0];
+            renderSimul();
+        }
+
+        // --- GAME MULTIPLAYER LOGIC ---
+        let p1State = [0,0,0,0,0,0,0,0];
+        let p2State = [0,0,0,0,0,0,0,0];
+        let currentTarget = 0;
+        let p1Score = 0;
+        let p2Score = 0;
+        let gameActive = false;
+
+        function initGame() {
+            p1Score = 0;
+            p2Score = 0;
+            gameActive = true;
+            document.getElementById('p1-car').style.transform = `translateX(0px) scaleX(-1)`;
+            document.getElementById('p2-car').style.transform = `translateX(0px) scaleX(-1)`;
+            generateNewTarget();
+            renderGameControls();
+        }
+
+        function generateNewTarget() {
+            currentTarget = Math.floor(Math.random() * 250) + 5;
+            document.getElementById('game-target').innerText = currentTarget;
+            p1State = [0,0,0,0,0,0,0,0];
+            p2State = [0,0,0,0,0,0,0,0];
+            renderGameControls();
+        }
+
+        function renderGameControls() {
+            const p1Container = document.getElementById('p1-controls');
+            const p2Container = document.getElementById('p2-controls');
+            p1Container.innerHTML = '';
+            p2Container.innerHTML = '';
+
+            p1State.forEach((val, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `p-3 rounded-xl border flex flex-col items-center justify-center transition-all ${
+                    val === 1 ? 'bg-red-600 text-white border-red-400 shadow-md' : 'bg-white text-slate-700 border-slate-200'
+                }`;
+                btn.onclick = () => toggleGameBit(1, idx);
+                btn.innerHTML = `
+                    <span class="text-[10px] opacity-70">${bitValues[idx]}</span>
+                    <span class="text-xl font-bold font-mono">${val}</span>
+                `;
+                p1Container.appendChild(btn);
+            });
+
+            p2State.forEach((val, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `p-3 rounded-xl border flex flex-col items-center justify-center transition-all ${
+                    val === 1 ? 'bg-blue-600 text-white border-blue-400 shadow-md' : 'bg-white text-slate-700 border-slate-200'
+                }`;
+                btn.onclick = () => toggleGameBit(2, idx);
+                btn.innerHTML = `
+                    <span class="text-[10px] opacity-70">${bitValues[idx]}</span>
+                    <span class="text-xl font-bold font-mono">${val}</span>
+                `;
+                p2Container.appendChild(btn);
+            });
+
+            document.getElementById('p1-score-txt').innerText = `Skor: ${p1Score}`;
+            document.getElementById('p2-score-txt').innerText = `Skor: ${p2Score}`;
+        }
+
+        function toggleGameBit(player, idx) {
+            if(!gameActive) return;
+            if(player === 1) p1State[idx] = p1State[idx] === 0 ? 1 : 0;
+            else p2State[idx] = p2State[idx] === 0 ? 1 : 0;
+            playSound('game-switch');
+            renderGameControls();
+        }
+
+        function calculateStateValue(stateArray) {
+            return stateArray.reduce((acc, curr, idx) => acc + (curr * bitValues[idx]), 0);
+        }
+
+        function checkGameAnswer(player) {
+            if(!gameActive) return;
+
+            playSound('gas');
+
+            const state = player === 1 ? p1State : p2State;
+            const value = calculateStateValue(state);
+
+            if(value === currentTarget) {
+                playSound('correct');
+                
+                if(player === 1) {
+                    p1Score++;
+                } else {
+                    p2Score++;
+                }
+                
+                const p1Car = document.getElementById('p1-car');
+                const p2Car = document.getElementById('p2-car');
+                if (p1Car) p1Car.style.transform = `translateX(${p1Score * 110}px) scaleX(-1)`;
+                if (p2Car) p2Car.style.transform = `translateX(${p2Score * 110}px) scaleX(-1)`;
+                
+                if (p1Score >= 5 || p2Score >= 5) {
+                    gameActive = false;
+                    const winner = player === 1 ? "MERAH" : "BIRU";
+                    document.getElementById('game-target').innerHTML = `<span class="text-green-400 font-black">🏁 ${winner} MENANG! 🏁</span>`;
+                } else {
+                    generateNewTarget();
+                }
+            } else {
+                playSound('wrong');
+                const panelId = player === 1 ? 'p1-controls' : 'p2-controls';
+                const panel = document.getElementById(panelId);
+                if (panel) {
+                    panel.style.transition = 'all 0.1s';
+                    panel.style.transform = 'translateY(10px)';
+                    panel.style.opacity = '0.5';
+                    setTimeout(() => {
+                        panel.style.transform = 'translateY(0)';
+                        panel.style.opacity = '1';
+                    }, 150);
+                }
+            }
+        }
+
+        // --- QUIZ DATA & LOGIC ---
+        const quizData = [
+            {
+                q: "Berapa jumlah total bit dalam satu alamat IPv4?",
+                options: ["8 bit", "16 bit", "32 bit", "64 bit"],
+                ans: 2
+            },
+            {
+                q: "Sistem bilangan biner berbasis angka...",
+                options: ["Basis 2 (0 dan 1)", "Basis 8 (0 sampai 7)", "Basis 10 (0 sampai 9)", "Basis 16 (0 sampai F)"],
+                ans: 0
+            },
+            {
+                q: "Berapakah nilai desimal dari biner 00001010?",
+                options: ["5", "10", "12", "15"],
+                ans: 1
+            },
+            {
+                q: "Berapa jumlah oktet dalam struktur penulisan IPv4?",
+                options: ["2 oktet", "4 oktet", "8 oktet", "32 oktet"],
+                ans: 1
+            },
+            {
+                q: "Biner untuk nilai desimal 192 adalah...",
+                options: ["11000000", "10101010", "11110000", "10000001"],
+                ans: 0
+            }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+        let sName = "";
+
+        function startQuiz() {
+            playSound('click');
+            const nameInput = document.getElementById('student-name').value.trim();
+            if(!nameInput) {
+                showToast("Peringatan", "Silakan masukkan nama Anda terlebih dahulu!", "warning");
+                return;
+            }
+            sName = nameInput;
+            currentQ = 0;
+            score = 0;
+            
+            document.getElementById('quiz-login').classList.add('hidden');
+            document.getElementById('quiz-box').classList.remove('hidden');
+            document.getElementById('quiz-result').classList.add('hidden');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if(currentQ >= quizData.length) {
+                finishQuiz();
+                return;
+            }
+            const qData = quizData[currentQ];
+            document.getElementById('quiz-progress').innerText = `Pertanyaan ${currentQ + 1} dari ${quizData.length}`;
+            document.getElementById('quiz-score-tracker').innerText = `Skor: ${Math.round(score)}`;
+            document.getElementById('quiz-question').innerText = qData.q;
+            
+            const optContainer = document.getElementById('quiz-options');
+            optContainer.innerHTML = '';
+            
+            qData.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full p-4 text-left border rounded-2xl hover:bg-blue-50 hover:border-blue-300 font-medium transition-all text-slate-700';
+                btn.innerText = opt;
+                btn.onclick = () => answerQuestion(idx);
+                optContainer.appendChild(btn);
+            });
+        }
+
+        function answerQuestion(idx) {
+            if(idx === quizData[currentQ].ans) {
+                score += (100 / quizData.length);
+                playSound('correct');
+            } else {
+                playSound('wrong');
+            }
+            
+            currentQ++;
+            loadQuestion();
+        }
+
+        function finishQuiz() {
+            document.getElementById('quiz-box').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            
+            const finalScore = Math.round(score);
+            document.getElementById('final-score-text').innerText = `Halo ${sName}, skor akhir Anda adalah: ${finalScore}`;
+            
+            if(finalScore >= 80) {
+                document.getElementById('certificate-box').classList.remove('hidden');
+                document.getElementById('btn-cert').classList.remove('hidden');
+                document.getElementById('cert-name').innerText = sName;
+            } else {
+                document.getElementById('certificate-box').classList.add('hidden');
+                document.getElementById('btn-cert').classList.add('hidden');
+            }
+
+            // Submit to Apps Script if URL provided
+            submitToAppsScript(finalScore);
+        }
+
+        function resetQuiz() {
+            playSound('click');
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-login').classList.remove('hidden');
+            document.getElementById('student-name').value = '';
+        }
+
+        function downloadCertificate() {
+            playSound('click');
+            const certBox = document.getElementById('certificate-box');
+            // Basic simulation of downloading by alerting/printing or creating canvas
+            window.print();
+        }
+
+        // --- APPS SCRIPT INSTRUCTIONS MODAL ---
+        function showAppsScriptInstructions() {
+            playSound('click');
+            const modal = document.getElementById('script-instructions-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeAppsScriptInstructions() {
+            playSound('click');
+            const modal = document.getElementById('script-instructions-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function copyScriptCode() {
+            const code = document.getElementById('script-code').innerText;
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(code);
+            } else {
+                let textArea = document.createElement("textarea");
+                textArea.value = code;
+                textArea.style.position = "fixed";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                } catch (err) {
+                    console.error('Oops, unable to copy', err);
+                }
+                document.body.removeChild(textArea);
+            }
+            showToast("Sukses", "Kode Script berhasil disalin ke clipboard!", "success");
+        }
+
+        // --- APPS SCRIPT SUBMISSION ---
+        async function submitToAppsScript(finalScore) {
+            const url = document.getElementById('apps-script-url').value.trim();
+            if(!url) return;
+
+            try {
+                const formData = new FormData();
+                formData.append('nama', sName);
+                formData.append('materi', 'Biner & IPv4');
+                formData.append('nilai', finalScore);
+                formData.append('tanggal', new Date().toLocaleString());
+                
+                await fetch(url, {
+                    method: 'POST',
+                    mode: 'no-cors', 
+                    body: formData
+                });
+                console.log("Score submitted successfully.");
+            } catch (e) {
+                console.log("Apps script submission error:", e);
+            }
+        }
+
+        // --- TOAST MODAL ---
+        function showToast(title, msg, type = 'success') {
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-msg').innerText = msg;
+            const icon = document.getElementById('toast-icon');
+            if(type === 'success') {
+                icon.innerHTML = '<i class="ph-fill ph-check-circle text-green-500"></i>';
+                document.getElementById('toast-content').className = "bg-white p-8 rounded-3xl max-w-sm w-full text-center shadow-2xl modal-animate border-t-8 border-green-500";
+            } else {
+                icon.innerHTML = '<i class="ph-fill ph-warning-circle text-yellow-500"></i>';
+                document.getElementById('toast-content').className = "bg-white p-8 rounded-3xl max-w-sm w-full text-center shadow-2xl modal-animate border-t-8 border-yellow-500";
+            }
+            const modal = document.getElementById('toast-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeToast() {
+            playSound('click');
+            const modal = document.getElementById('toast-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Initial setup on load
+        window.onload = function() {
+            renderSimul();
+            initGame();
+        };
+    </script>
+</body>
+</html>
