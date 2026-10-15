@@ -6,10 +6,13 @@
     <title>MPI: Jaringan Dasar - Biner & IPv4</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <!-- Phosphor Icons for UI Elements -->
+    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <!-- Tone.js for Sound Effects -->
+    <!-- Tone.js for Sound Effects & Music -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Canvas Confetti for winning effect -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
     <style>
         body { font-family: 'Inter', sans-serif; }
         .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
@@ -19,130 +22,135 @@
         }
         .modal-animate { animation: fadeIn 0.2s ease-out forwards; }
         .section-hidden { display: none !important; }
+        
+        /* Custom radio button style for difficulty */
+        .diff-radio:checked + label {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #2563eb;
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen text-slate-800 flex flex-col justify-between">
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen text-slate-800 flex flex-col justify-between overflow-x-hidden">
 
     <!-- Header Navigation -->
     <header class="glass shadow-sm z-50 p-4 shrink-0 flex justify-between items-center relative">
         <div class="flex items-center gap-3">
-            <div class="bg-blue-600 text-white p-2 rounded-xl">
+            <div class="bg-blue-600 text-white p-2 rounded-xl flex items-center justify-center">
                 <i class="ph ph-network text-3xl"></i>
             </div>
             <div>
-                <h1 class="text-2xl font-bold leading-none text-slate-800">Jaringan Dasar</h1>
-                <p class="text-sm text-slate-500 font-medium">Biner & IPv4</p>
+                <h1 class="text-xl md:text-2xl font-bold leading-none text-slate-800">Jaringan Dasar</h1>
+                <p class="text-xs md:text-sm text-slate-500 font-medium">Biner & IPv4</p>
             </div>
+            <!-- BGM Toggle Button -->
+            <button id="bgm-btn" onclick="toggleBGM()" class="ml-4 w-10 h-10 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center text-xl transition-colors shadow-sm" title="Nyalakan/Matikan Musik">
+                <i class="ph ph-speaker-slash"></i>
+            </button>
         </div>
-        <nav class="flex gap-2 bg-slate-100 p-1 rounded-2xl hidden md:flex">
+        
+        <nav class="hidden md:flex gap-2 bg-slate-100 p-1 rounded-2xl">
             <button onclick="playSound('click'); navigate('materi')" id="nav-materi" class="nav-btn bg-white shadow-sm text-blue-600 px-6 py-3 rounded-xl font-semibold hover:text-blue-600 hover:bg-white transition-all">📖 Materi</button>
             <button onclick="playSound('click'); navigate('simulasi')" id="nav-simulasi" class="nav-btn text-slate-500 px-6 py-3 rounded-xl font-semibold hover:text-blue-600 hover:bg-white transition-all">💡 Simulasi</button>
             <button onclick="playSound('click'); navigate('game')" id="nav-game" class="nav-btn text-slate-500 px-6 py-3 rounded-xl font-semibold hover:text-blue-600 hover:bg-white transition-all">🏎️ Biner Ngebut</button>
             <button onclick="playSound('click'); navigate('kuis')" id="nav-kuis" class="nav-btn text-slate-500 px-6 py-3 rounded-xl font-semibold hover:text-blue-600 hover:bg-white transition-all">📝 Kuis</button>
         </nav>
-        <!-- Mobile Menu Placeholder -->
-        <button class="md:hidden p-2 text-slate-600 text-2xl"><i class="ph ph-list"></i></button>
     </header>
 
     <!-- Main Content Area -->
-    <main class="flex-1 p-6 md:p-10 overflow-y-auto">
+    <main class="flex-1 p-4 md:p-10 overflow-y-auto">
         
-        <!-- SECTION: MATERI (DIROMBAK DAN DILENGKAPI) -->
+        <!-- SECTION: MATERI -->
         <section id="sec-materi" class="max-w-6xl mx-auto space-y-8 pb-20 block">
             <div class="text-center space-y-3">
                 <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Modul Pembelajaran Kelas X</span>
-                <h2 class="text-4xl font-extrabold text-slate-800">Memahami Bilangan Biner & IPv4</h2>
-                <p class="text-slate-600 max-w-2xl mx-auto">Pelajari bagaimana komputer memproses angka menggunakan sakelar digital dan bagaimana ia diterapkan pada alamat IP.</p>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-800">Memahami Bilangan Biner & IPv4</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto text-sm md:text-base">Pelajari bagaimana komputer memproses angka menggunakan sakelar digital dan bagaimana ia diterapkan pada alamat IP.</p>
             </div>
 
             <!-- Grid Materi -->
             <div class="grid md:grid-cols-2 gap-6 md:gap-8">
-                
-                <!-- Card 1: Konsep Biner -->
-                <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex flex-col">
+                <!-- Card 1 -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex flex-col">
                     <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6">
                         <i class="ph ph-cpu"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-slate-800 mb-4">1. Apa itu Bilangan Biner?</h3>
                     <p class="text-slate-600 leading-relaxed mb-4 flex-1">
-                        Manusia berhitung menggunakan 10 angka (0-9) yang disebut <strong>Desimal</strong>. Namun, komputer hanya memahami dua kondisi kelistrikan: <span class="text-green-600 font-bold">Ada Arus (1)</span> dan <span class="text-red-600 font-bold">Tidak Ada Arus (0)</span>. Sistem dua angka ini disebut <strong>Biner</strong> (Basis 2).
+                        Manusia berhitung menggunakan 10 angka (0-9). Namun, komputer hanya memahami dua kondisi kelistrikan: <span class="text-green-600 font-bold">Ada Arus (1)</span> dan <span class="text-red-600 font-bold">Tidak Ada Arus (0)</span>. Sistem dua angka ini disebut <strong>Biner</strong> (Basis 2).
                     </p>
                     <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 text-sm">
                         <p class="text-indigo-800">Setiap satu angka 0 atau 1 disebut <strong>Bit</strong>. Kumpulan dari 8 Bit disebut <strong>1 Byte</strong>.</p>
                     </div>
                 </div>
 
-                <!-- Card 2: Struktur IPv4 -->
-                <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex flex-col">
+                <!-- Card 2 -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex flex-col">
                     <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mb-6">
                         <i class="ph ph-globe-hemisphere-east"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-slate-800 mb-4">2. Alamat IPv4</h3>
                     <p class="text-slate-600 leading-relaxed mb-4 flex-1">
-                        IPv4 (Internet Protocol version 4) adalah alamat untuk perangkat di jaringan komputer. IPv4 terdiri dari <strong>32 bit</strong> yang dibagi menjadi <strong>4 Oktet</strong> (1 oktet = 8 bit), dipisahkan dengan tanda titik.
+                        IPv4 terdiri dari <strong>32 bit</strong> yang dibagi menjadi <strong>4 Oktet</strong> (1 oktet = 8 bit), dipisahkan dengan tanda titik.
                     </p>
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm font-mono text-center">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm font-mono text-center overflow-x-auto">
                         <span class="text-slate-400">Desimal:</span> <span class="font-bold text-lg text-slate-800">192 . 168 . 1 . 10</span><br>
                         <span class="text-slate-400">Biner:</span> <span class="text-xs text-blue-600">11000000 . 10101000 . 00000001 . 00001010</span>
                     </div>
                 </div>
 
-                <!-- Card 3: Konversi Biner ke Desimal (Full Width) -->
-                <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 md:col-span-2">
+                <!-- Card 3 -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 md:col-span-2">
                     <h3 class="text-2xl font-bold text-slate-800 mb-4">3. Cara Konversi Biner ke Desimal</h3>
-                    <p class="text-slate-600 mb-4">Dalam 1 oktet (8 bit), nilai dihitung dari kanan ke kiri sebagai perpangkatan angka 2. Jika bit bernilai <strong class="text-green-600">1 (Hidup)</strong>, angkanya dijumlahkan. Jika <strong class="text-red-600">0 (Mati)</strong>, nilainya diabaikan.</p>
+                    <p class="text-slate-600 mb-4">Nilai dihitung dari kanan ke kiri sebagai perpangkatan angka 2. Jika bit bernilai <strong class="text-green-600">1 (Hidup)</strong>, angkanya dijumlahkan. Jika <strong class="text-red-600">0 (Mati)</strong>, diabaikan.</p>
                     
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-center border-collapse">
+                    <div class="overflow-x-auto mb-4">
+                        <table class="w-full text-center border-collapse min-w-[500px]">
                             <thead>
-                                <tr class="bg-slate-100 text-slate-500 text-sm font-bold uppercase tracking-wider">
-                                    <th class="p-3 border-r border-white">Bit ke-8</th><th class="p-3 border-r border-white">Bit ke-7</th><th class="p-3 border-r border-white">Bit ke-6</th><th class="p-3 border-r border-white">Bit ke-5</th><th class="p-3 border-r border-white">Bit ke-4</th><th class="p-3 border-r border-white">Bit ke-3</th><th class="p-3 border-r border-white">Bit ke-2</th><th class="p-3">Bit ke-1</th>
+                                <tr class="bg-slate-100 text-slate-500 text-xs md:text-sm font-bold uppercase tracking-wider">
+                                    <th class="p-2 border-r border-white">Bit 8</th><th class="p-2 border-r border-white">Bit 7</th><th class="p-2 border-r border-white">Bit 6</th><th class="p-2 border-r border-white">Bit 5</th><th class="p-2 border-r border-white">Bit 4</th><th class="p-2 border-r border-white">Bit 3</th><th class="p-2 border-r border-white">Bit 2</th><th class="p-2">Bit 1</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="bg-blue-50 text-blue-800 font-black text-xl border-b-2 border-white">
-                                    <td class="p-4">128</td><td class="p-4">64</td><td class="p-4">32</td><td class="p-4">16</td><td class="p-4">8</td><td class="p-4">4</td><td class="p-4">2</td><td class="p-4">1</td>
+                                <tr class="bg-blue-50 text-blue-800 font-black text-lg md:text-xl border-b-2 border-white">
+                                    <td class="p-3">128</td><td class="p-3">64</td><td class="p-3">32</td><td class="p-3">16</td><td class="p-3">8</td><td class="p-3">4</td><td class="p-3">2</td><td class="p-3">1</td>
                                 </tr>
-                                <!-- Contoh Soal -->
-                                <tr class="font-mono text-2xl font-bold text-slate-700">
-                                    <td class="p-4 text-green-600">1</td><td class="p-4 text-red-400">0</td><td class="p-4 text-green-600">1</td><td class="p-4 text-red-400">0</td><td class="p-4 text-green-600">1</td><td class="p-4 text-red-400">0</td><td class="p-4 text-red-400">0</td><td class="p-4 text-red-400">0</td>
+                                <tr class="font-mono text-xl md:text-2xl font-bold text-slate-700">
+                                    <td class="p-3 text-green-600">1</td><td class="p-3 text-red-400">0</td><td class="p-3 text-green-600">1</td><td class="p-3 text-red-400">0</td><td class="p-3 text-green-600">1</td><td class="p-3 text-red-400">0</td><td class="p-3 text-red-400">0</td><td class="p-3 text-red-400">0</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
-                        <p class="text-sm font-bold text-yellow-800 mb-1">Contoh Perhitungan Biner "10101000":</p>
+                    <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-xl text-sm md:text-base">
+                        <p class="font-bold text-yellow-800 mb-1">Contoh Perhitungan Biner "10101000":</p>
                         <p class="font-mono text-slate-700">=> (1x128) + 0 + (1x32) + 0 + (1x8) + 0 + 0 + 0</p>
                         <p class="font-mono text-slate-700">=> 128 + 32 + 8 = <strong class="text-xl text-yellow-600">168</strong></p>
                     </div>
                 </div>
 
-                <!-- Card 4: Konversi Desimal ke Biner (Full Width) -->
-                <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 md:col-span-2">
-                    <h3 class="text-2xl font-bold text-slate-800 mb-4">4. Cara Konversi Desimal ke Biner</h3>
-                    <p class="text-slate-600 mb-4">Gunakan metode <strong>Pengurangan dengan Nilai Tempat</strong> (128, 64, 32, 16, 8, 4, 2, 1). Jika angka bisa dikurangi, tulis <strong>1</strong> dan kurangi angkanya. Jika tidak bisa dikurangi, tulis <strong>0</strong>.</p>
-                    
+                <!-- Card 4 -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 md:col-span-2">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">4. Praktik dan Evaluasi</h3>
                     <div class="grid md:grid-cols-2 gap-6">
                         <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-sm">
-                            <p class="font-bold text-slate-800 mb-2">Contoh: Ubah angka <span class="text-blue-600 text-lg">192</span> ke Biner!</p>
-                            <ul class="space-y-2 text-slate-600 font-mono">
-                                <li>192 - <strong>128</strong> = 64 <span class="text-green-600 font-bold ml-2">(Bisa -> Tulis 1)</span></li>
-                                <li>64 - <strong>64</strong> = 0 <span class="text-green-600 font-bold ml-4">(Bisa -> Tulis 1)</span></li>
-                                <li>0 - <strong>32</strong> <span class="text-red-500 font-bold ml-8">(Tidak -> Tulis 0)</span></li>
-                                <li><span class="text-slate-400 italic">Karena sisa sudah 0, bit selanjutnya otomatis 0.</span></li>
+                            <p class="font-bold text-slate-800 mb-2">Metode Pengurangan (Desimal -> Biner)</p>
+                            <ul class="space-y-2 text-slate-600 font-mono text-xs md:text-sm">
+                                <li>192 - <strong>128</strong> = 64 <span class="text-green-600 font-bold ml-1">(Bisa -> 1)</span></li>
+                                <li>64 - <strong>64</strong> = 0 <span class="text-green-600 font-bold ml-3">(Bisa -> 1)</span></li>
+                                <li>0 - <strong>32</strong> <span class="text-red-500 font-bold ml-7">(Tidak -> 0)</span></li>
                             </ul>
                             <div class="mt-4 pt-3 border-t border-slate-200">
-                                <span class="text-slate-500">Hasil Biner:</span> <span class="text-xl font-bold tracking-widest text-slate-800 ml-2">11000000</span>
+                                <span class="text-slate-500">Hasil:</span> <span class="text-lg font-bold tracking-widest text-slate-800 ml-2">11000000</span>
                             </div>
                         </div>
                         <div class="flex flex-col justify-center items-center text-center p-4">
                             <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mb-4">
-                                <i class="ph ph-lightbulb"></i>
+                                <i class="ph ph-game-controller"></i>
                             </div>
-                            <h4 class="font-bold text-slate-800 mb-2">Paham Konsepnya?</h4>
-                            <p class="text-sm text-slate-500 mb-4">Memahami langkah ini adalah kunci untuk memenangkan permainan "Biner Ngebut" dan menjawab kuis nanti.</p>
-                            <button onclick="playSound('click'); navigate('simulasi')" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-bold shadow-lg shadow-blue-200 transition-all">
-                                Praktikkan di Simulasi <i class="ph ph-arrow-right ml-1"></i>
+                            <h4 class="font-bold text-slate-800 mb-2">Siap Bermain?</h4>
+                            <p class="text-sm text-slate-500 mb-4">Pahami logikanya di Simulasi, lalu menangkan game Biner Ngebut!</p>
+                            <button onclick="playSound('click'); navigate('simulasi')" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-bold shadow-lg transition-all">
+                                Coba Simulasi Sekarang <i class="ph ph-arrow-right ml-1"></i>
                             </button>
                         </div>
                     </div>
@@ -153,36 +161,27 @@
 
         <!-- SECTION: SIMULASI -->
         <section id="sec-simulasi" class="max-w-6xl mx-auto space-y-8 section-hidden h-full flex-col justify-center">
-            
             <div class="text-center space-y-2 mb-8">
-                <h2 class="text-3xl font-extrabold text-slate-800">Simulasi Lampu Biner (8-Bit)</h2>
-                <p class="text-slate-600">Klik sakelar di bawah untuk menyalakan atau mematikan lampu. Amati bagaimana nilai desimalnya dihitung secara otomatis!</p>
+                <h2 class="text-3xl font-extrabold text-slate-800">Simulasi Lampu Biner</h2>
+                <p class="text-slate-600">Klik sakelar di bawah untuk menyalakan atau mematikan lampu.</p>
             </div>
 
             <!-- Simulation Board -->
-            <div class="bg-gradient-to-r from-slate-900 to-indigo-950 p-8 md:p-12 rounded-3xl shadow-2xl text-white flex flex-col items-center relative overflow-hidden">
-                <!-- Background Glow -->
+            <div class="bg-gradient-to-r from-slate-900 to-indigo-950 p-6 md:p-12 rounded-3xl shadow-2xl text-white flex flex-col items-center relative overflow-hidden">
                 <div class="absolute -top-24 -left-24 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl"></div>
                 <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl"></div>
 
-                <!-- Display Result Container -->
                 <div class="text-center mb-10 z-10">
                     <p class="text-slate-400 text-sm font-medium uppercase tracking-widest mb-1">Total Nilai Desimal</p>
-                    <div id="sim-total" class="text-6xl md:text-8xl font-black font-mono tracking-wider text-yellow-400 drop-shadow-[0_0_20px_rgba(250,204,21,0.5)]">
-                        0
-                    </div>
-                    <div id="sim-formula" class="text-sm md:text-base font-mono text-slate-300 mt-2">
-                        0
-                    </div>
+                    <div id="sim-total" class="text-7xl md:text-8xl font-black font-mono tracking-wider text-yellow-400 drop-shadow-[0_0_20px_rgba(250,204,21,0.5)]">0</div>
+                    <div id="sim-formula" class="text-sm md:text-base font-mono text-slate-300 mt-2">0</div>
                 </div>
 
-                <!-- Bulbs and Switches Grid -->
-                <div class="grid grid-cols-4 md:grid-cols-8 gap-4 md:gap-6 w-full max-w-5xl z-10" id="sim-container">
-                    <!-- Injected by JS -->
-                </div>
+                <!-- Bulbs Grid -->
+                <div class="grid grid-cols-4 md:grid-cols-8 gap-3 md:gap-6 w-full max-w-5xl z-10" id="sim-container"></div>
 
                 <button onclick="playSound('reset'); resetSim()" class="mt-8 bg-white/10 hover:bg-white/20 text-white border border-white/30 px-6 py-3 rounded-full text-lg font-medium transition-all relative z-10">
-                    <i class="ph ph-arrow-counter-clockwise mr-2"></i> Reset Lampu
+                    <i class="ph ph-arrow-counter-clockwise mr-2"></i> Reset
                 </button>
             </div>
         </section>
@@ -192,13 +191,27 @@
             <div class="text-center mb-6 shrink-0 relative">
                 <h2 class="text-3xl font-extrabold text-slate-800">Biner Ngebut 🏎️💨</h2>
                 <p class="text-slate-600">Adu cepat pilih angka desimal target! Jawab 3 kali dengan benar untuk memenangkan balapan!</p>
-                <button onclick="openPanduan()" class="mt-3 bg-yellow-100 text-yellow-800 px-5 py-2 rounded-xl text-sm font-bold border-2 border-yellow-300 hover:bg-yellow-200 transition-colors shadow-sm inline-flex items-center gap-2">
-                    <i class="ph ph-info text-lg"></i> Panduan Bermain
-                </button>
+                <div class="mt-4 flex flex-wrap justify-center gap-2 md:gap-4">
+                    <button onclick="openPanduan()" class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-xl text-sm font-bold border-2 border-yellow-300 hover:bg-yellow-200 transition-colors inline-flex items-center gap-2">
+                        <i class="ph ph-info text-lg"></i> Panduan
+                    </button>
+                    <!-- Difficulty Selection -->
+                    <div class="bg-white px-2 py-1 rounded-xl border-2 border-slate-200 inline-flex items-center text-sm font-semibold shadow-sm overflow-hidden">
+                        <span class="mr-2 text-slate-500 pl-2"><i class="ph ph-faders"></i> Level:</span>
+                        <input type="radio" id="diff4" name="difficulty" value="4" class="hidden diff-radio" onchange="changeDifficulty()">
+                        <label for="diff4" class="px-3 py-1 cursor-pointer rounded-lg border border-transparent text-slate-600 hover:bg-slate-100 transition-all">Mudah (4-Bit)</label>
+                        
+                        <input type="radio" id="diff6" name="difficulty" value="6" class="hidden diff-radio" onchange="changeDifficulty()">
+                        <label for="diff6" class="px-3 py-1 cursor-pointer rounded-lg border border-transparent text-slate-600 hover:bg-slate-100 transition-all">Sedang (6-Bit)</label>
+                        
+                        <input type="radio" id="diff8" name="difficulty" value="8" class="hidden diff-radio" checked onchange="changeDifficulty()">
+                        <label for="diff8" class="px-3 py-1 cursor-pointer rounded-lg border border-transparent text-slate-600 hover:bg-slate-100 transition-all">Ahli (8-Bit)</label>
+                    </div>
+                </div>
             </div>
 
             <!-- Race Track Arena -->
-            <div class="bg-slate-900 rounded-3xl p-6 text-white shadow-2xl relative overflow-hidden mb-6 shrink-0 border border-slate-800">
+            <div class="bg-slate-900 rounded-3xl p-4 md:p-6 text-white shadow-2xl relative overflow-hidden mb-6 shrink-0 border border-slate-800">
                 <div class="absolute inset-0 flex items-center justify-between px-12 pointer-events-none opacity-20">
                     <div class="border-r-4 border-dashed border-white h-full"></div>
                     <div class="border-r-4 border-dashed border-white h-full"></div>
@@ -207,148 +220,145 @@
                 </div>
 
                 <!-- Target Header -->
-                <div class="text-center mb-4 relative z-10">
+                <div class="text-center mb-6 relative z-10">
                     <span class="text-xs uppercase tracking-widest text-slate-400 font-bold">Target Biner</span>
-                    <div id="game-target" class="text-5xl md:text-6xl font-black font-mono text-yellow-400">--</div>
+                    <div id="game-target" class="text-4xl md:text-6xl font-black font-mono text-yellow-400 tracking-[0.2em] md:tracking-[0.3em]">--</div>
                 </div>
 
                 <!-- TIM A Car Track -->
                 <div class="mb-4 relative">
                     <div class="flex justify-between text-xs text-red-400 font-bold mb-1">
-                        <span>TIM A (Merah)</span>
-                        <span id="p1-score-txt">Skor: 0 / 3</span>
+                        <span>TIM A (Merah)</span><span id="p1-score-txt">Skor: 0 / 3</span>
                     </div>
                     <div class="h-16 bg-slate-800 rounded-xl relative overflow-hidden flex items-center border border-slate-700 w-full">
-                        <div id="p1-car" class="absolute text-5xl transition-all duration-700 ease-in-out transform scale-x-[-1] z-10" style="left: 2%;">
-                            🏎️
+                        <div id="p1-car" class="absolute transition-all duration-700 ease-in-out z-10 flex items-center" style="left: 2%; transform: scaleX(-1);">
+                            <span class="text-4xl md:text-5xl">🏎️</span>
+                            <span id="p1-boost" class="opacity-0 transition-opacity duration-300 text-3xl md:text-4xl" style="transform: scaleX(-1); margin-left: -10px;">🔥</span>
                         </div>
-                        <div class="absolute right-2 text-4xl opacity-80 z-0">🏁</div>
+                        <div class="absolute right-2 text-3xl md:text-4xl opacity-80 z-0">🏁</div>
                     </div>
                 </div>
 
                 <!-- TIM B Car Track -->
                 <div class="relative">
                     <div class="flex justify-between text-xs text-blue-400 font-bold mb-1">
-                        <span>TIM B (Biru)</span>
-                        <span id="p2-score-txt">Skor: 0 / 3</span>
+                        <span>TIM B (Biru)</span><span id="p2-score-txt">Skor: 0 / 3</span>
                     </div>
                     <div class="h-16 bg-slate-800 rounded-xl relative overflow-hidden flex items-center border border-slate-700 w-full">
-                        <div id="p2-car" class="absolute text-5xl transition-all duration-700 ease-in-out transform scale-x-[-1] z-10" style="left: 2%;">
-                            🚗
+                        <div id="p2-car" class="absolute transition-all duration-700 ease-in-out z-10 flex items-center" style="left: 2%; transform: scaleX(-1);">
+                            <span class="text-4xl md:text-5xl">🚗</span>
+                            <span id="p2-boost" class="opacity-0 transition-opacity duration-300 text-3xl md:text-4xl" style="transform: scaleX(-1); margin-left: -10px;">🔥</span>
                         </div>
-                        <div class="absolute right-2 text-4xl opacity-80 z-0">🏁</div>
+                        <div class="absolute right-2 text-3xl md:text-4xl opacity-80 z-0">🏁</div>
                     </div>
                 </div>
             </div>
 
             <!-- Kontrol Pemain -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mt-6">
-                <!-- Bagian TIM A -->
-                <div class="bg-red-50 p-6 rounded-2xl border-2 border-red-100 flex flex-col items-center text-center shadow-sm">
-                    <h3 class="text-2xl font-bold text-red-600 mb-2">Kontrol TIM A</h3>
-                    <p class="text-sm text-slate-500 mb-6">Pilih angka desimal yang tepat!</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full mt-2">
+                <div class="bg-red-50 p-4 md:p-6 rounded-2xl border-2 border-red-100 flex flex-col items-center text-center shadow-sm">
+                    <h3 class="text-xl md:text-2xl font-bold text-red-600 mb-2">Kontrol TIM A</h3>
                     <div id="p1-controls" class="w-full"></div> 
                 </div>
-
-                <!-- Bagian TIM B -->
-                <div class="bg-blue-50 p-6 rounded-2xl border-2 border-blue-100 flex flex-col items-center text-center shadow-sm">
-                    <h3 class="text-2xl font-bold text-blue-600 mb-2">Kontrol TIM B</h3>
-                    <p class="text-sm text-slate-500 mb-6">Pilih angka desimal yang tepat!</p>
+                <div class="bg-blue-50 p-4 md:p-6 rounded-2xl border-2 border-blue-100 flex flex-col items-center text-center shadow-sm">
+                    <h3 class="text-xl md:text-2xl font-bold text-blue-600 mb-2">Kontrol TIM B</h3>
                     <div id="p2-controls" class="w-full"></div> 
                 </div>
             </div>
         </section>
 
-        <!-- SECTION: KUIS & SERTIFIKAT -->
-        <section id="sec-kuis" class="max-w-4xl mx-auto section-hidden pb-20 block">
+        <!-- SECTION: KUIS, LEADERBOARD, & SERTIFIKAT -->
+        <section id="sec-kuis" class="max-w-5xl mx-auto section-hidden pb-20 block">
             <div class="text-center space-y-4 mb-10">
                 <h2 class="text-4xl font-extrabold text-slate-800">Kuis Evaluasi</h2>
-                <p class="text-slate-600">Jawab 5 pertanyaan berikut untuk menguji pemahaman Anda. Dapatkan nilai minimal 80 untuk mencetak sertifikat!</p>
+                <p class="text-slate-600">Jawab pertanyaan untuk menguji pemahaman Anda. Raih skor tertinggi dan masuk Leaderboard!</p>
             </div>
 
-            <!-- Configuration for Teacher (Apps Script) -->
-            <div class="bg-yellow-50 border border-yellow-200 p-6 rounded-2xl mb-8 flex flex-col md:flex-row items-center gap-4">
-                <div class="text-yellow-600 text-4xl shrink-0"><i class="ph ph-warning-circle"></i></div>
-                <div class="flex-1 w-full">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h4 class="font-bold text-yellow-800">Pengaturan Guru (Opsional)</h4>
-                            <p class="text-sm text-yellow-700 mb-3">Masukkan URL Web App dari Google Apps Script untuk merekap nilai siswa ke Google Sheets.</p>
-                        </div>
-                        <button onclick="showAppsScriptInstructions()" class="bg-yellow-200 hover:bg-yellow-300 text-yellow-800 px-3 py-1 rounded-lg text-sm font-semibold transition-colors flex items-center gap-1">
-                            <i class="ph ph-info"></i> Cara Buat Script
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <!-- Main Quiz Area -->
+                <div class="md:col-span-2">
+                    <div id="quiz-card" class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 relative">
+                        <!-- Settings Icon -->
+                        <button onclick="showAppsScriptInstructions()" class="absolute top-4 right-4 text-slate-400 hover:text-blue-600 text-2xl transition-colors" title="Pengaturan Guru">
+                            <i class="ph ph-gear-six"></i>
                         </button>
-                    </div>
-                    <input type="text" id="apps-script-url" placeholder="https://script.google.com/macros/s/..." class="w-full p-3 rounded-lg border border-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 text-sm">
-                </div>
-            </div>
+                        
+                        <!-- Step 1: Login -->
+                        <div id="quiz-login" class="space-y-6 text-center">
+                            <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-3xl mx-auto flex items-center justify-center text-4xl">
+                                <i class="ph ph-user-circle"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-slate-800 mb-2">Masukkan Identitas</h3>
+                                <p class="text-slate-500 text-sm">Ketik nama lengkap Anda sebelum memulai kuis.</p>
+                            </div>
+                            <input type="text" id="student-name" placeholder="Nama Lengkap Siswa" class="w-full p-4 border rounded-2xl text-center text-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                            <button onclick="startQuiz()" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-2xl font-bold text-lg shadow-lg transition-all">
+                                Mulai Kuis 🚀
+                            </button>
+                        </div>
 
-            <!-- Quiz Container -->
-            <div id="quiz-card" class="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-slate-100">
-                <!-- Step 1: Input Name -->
-                <div id="quiz-login" class="space-y-6 text-center max-w-md mx-auto">
-                    <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-3xl mx-auto flex items-center justify-center text-4xl">
-                        <i class="ph ph-user-circle"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold text-slate-800 mb-2">Masukkan Identitas</h3>
-                        <p class="text-slate-500 text-sm">Silakan ketik nama lengkap Anda sebelum memulai kuis.</p>
-                    </div>
-                    <input type="text" id="student-name" placeholder="Nama Lengkap Siswa" class="w-full p-4 border rounded-2xl text-center text-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
-                    <button onclick="startQuiz()" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-2xl font-bold text-lg shadow-lg shadow-blue-200 transition-all">
-                        Mulai Kuis 🚀
-                    </button>
-                </div>
+                        <!-- Step 2: Questions -->
+                        <div id="quiz-box" class="hidden space-y-6">
+                            <div class="flex justify-between items-center text-sm font-semibold text-slate-400 border-b pb-4">
+                                <span id="quiz-progress">Pertanyaan 1 dari 5</span>
+                                <span id="quiz-score-tracker">Skor: 0</span>
+                            </div>
+                            <h3 id="quiz-question" class="text-xl md:text-2xl font-bold text-slate-800"></h3>
+                            <div id="quiz-options" class="grid gap-3"></div>
+                        </div>
 
-                <!-- Step 2: Question Box -->
-                <div id="quiz-box" class="hidden space-y-6">
-                    <div class="flex justify-between items-center text-sm font-semibold text-slate-400 border-b pb-4">
-                        <span id="quiz-progress">Pertanyaan 1 dari 5</span>
-                        <span id="quiz-score-tracker">Skor: 0</span>
-                    </div>
-                    <h3 id="quiz-question" class="text-xl md:text-2xl font-bold text-slate-800"></h3>
-                    <div id="quiz-options" class="grid gap-4">
-                        <!-- Options injected by JS -->
-                    </div>
-                </div>
-
-                <!-- Step 3: Result & Certificate -->
-                <div id="quiz-result" class="hidden text-center space-y-6">
-                    <div class="w-24 h-24 bg-green-100 text-green-600 rounded-full mx-auto flex items-center justify-center text-5xl">
-                        <i class="ph ph-trophy"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-3xl font-extrabold text-slate-800 mb-2">Kuis Selesai!</h3>
-                        <p id="final-score-text" class="text-lg text-slate-600"></p>
-                    </div>
-                    <div id="certificate-box" class="hidden bg-slate-50 border-2 border-dashed border-slate-300 p-8 rounded-3xl max-w-xl mx-auto text-left relative overflow-hidden">
-                        <div class="text-center space-y-2">
-                            <h4 class="text-xs uppercase tracking-widest text-blue-600 font-bold">Sertifikat Kelulusan</h4>
-                            <h2 class="text-2xl font-black text-slate-800">Kompetensi Biner & IPv4</h2>
-                            <p class="text-xs text-slate-500">Diberikan kepada:</p>
-                            <p id="cert-name" class="text-xl font-bold text-slate-900 border-b border-slate-200 pb-2 inline-block min-w-[200px]"></p>
-                            <p class="text-xs text-slate-600 pt-2">Telah berhasil menyelesaikan pembelajaran dan kuis Jaringan Dasar dengan hasil memuaskan.</p>
+                        <!-- Step 3: Result -->
+                        <div id="quiz-result" class="hidden text-center space-y-6">
+                            <div class="w-24 h-24 bg-green-100 text-green-600 rounded-full mx-auto flex items-center justify-center text-5xl">
+                                <i class="ph ph-trophy"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-3xl font-extrabold text-slate-800 mb-2">Kuis Selesai!</h3>
+                                <p id="final-score-text" class="text-lg text-slate-600"></p>
+                            </div>
+                            <div id="certificate-box" class="hidden bg-slate-50 border-2 border-dashed border-slate-300 p-6 rounded-3xl max-w-full mx-auto text-left relative overflow-hidden">
+                                <div class="text-center space-y-2">
+                                    <h4 class="text-xs uppercase tracking-widest text-blue-600 font-bold">Sertifikat Kelulusan</h4>
+                                    <h2 class="text-xl font-black text-slate-800">Kompetensi Biner & IPv4</h2>
+                                    <p class="text-xs text-slate-500">Diberikan kepada:</p>
+                                    <p id="cert-name" class="text-xl font-bold text-slate-900 border-b border-slate-200 pb-2 inline-block min-w-[200px]"></p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap justify-center gap-4">
+                                <button onclick="downloadCertificate()" id="btn-cert" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center gap-2">
+                                    <i class="ph ph-download-simple"></i> Download Sertifikat
+                                </button>
+                                <button onclick="resetQuiz()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-6 py-3 rounded-xl font-bold transition-all">
+                                    Ulangi Kuis
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex flex-wrap justify-center gap-4">
-                        <button onclick="downloadCertificate()" id="btn-cert" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center gap-2">
-                            <i class="ph ph-download-simple"></i> Download Sertifikat
-                        </button>
-                        <button onclick="resetQuiz()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-6 py-3 rounded-xl font-bold transition-all">
-                            Ulangi Kuis
-                        </button>
+                </div>
+
+                <!-- Leaderboard Area -->
+                <div class="md:col-span-1">
+                    <div class="bg-gradient-to-b from-indigo-600 to-blue-700 rounded-3xl p-6 shadow-xl text-white h-full flex flex-col">
+                        <div class="flex items-center justify-center gap-2 mb-6">
+                            <i class="ph-fill ph-ranking text-3xl text-yellow-400"></i>
+                            <h3 class="text-xl font-bold">Top 5 Hari Ini</h3>
+                        </div>
+                        <div id="leaderboard-list" class="flex-1 flex flex-col gap-3 text-slate-800">
+                            <!-- Injected by JS -->
+                        </div>
+                        <button onclick="clearLeaderboard()" class="mt-6 text-xs text-blue-200 hover:text-white underline text-center">Reset Papan Peringkat</button>
                     </div>
                 </div>
+
             </div>
         </section>
 
     </main>
 
-    <!-- Footer -->
-    <footer class="text-center py-4 text-xs text-slate-400 border-t border-slate-200 shrink-0">
-        Media Pembelajaran Interaktif Jaringan Dasar • Kelas X Teknik Komputer dan Jaringan
-    </footer>
-
+    <!-- Modals (Panduan, Toast, Apps Script) -->
+    
     <!-- Modal Panduan Bermain Game -->
     <div id="panduan-modal" class="fixed inset-0 bg-black/60 z-[100] hidden items-center justify-center backdrop-blur-sm p-4">
         <div class="bg-white p-8 rounded-3xl max-w-2xl w-full shadow-2xl modal-animate border-t-8 border-yellow-400">
@@ -358,21 +368,20 @@
                 </h3>
                 <button onclick="closePanduan()" class="text-slate-400 hover:text-red-500 transition-colors"><i class="ph ph-x text-2xl"></i></button>
             </div>
-            
-            <div class="space-y-5 text-slate-700 text-lg">
-                <p class="bg-yellow-50 p-4 rounded-xl border border-yellow-200 text-yellow-800 text-sm">
-                    <strong>Tujuan:</strong> Balapan mobil adu cepat menjawab soal biner. Tim pertama yang menjawab 3 kali dengan benar akan menyentuh garis finish dan menang!
+            <div class="space-y-4 text-slate-700 text-sm md:text-base">
+                <p class="bg-yellow-50 p-4 rounded-xl border border-yellow-200 text-yellow-800">
+                    <strong>Tujuan:</strong> Balapan mobil adu cepat menjawab soal biner. Tim yang menjawab 3 kali dengan benar akan menang!
                 </p>
-                <ol class="list-decimal list-inside space-y-3 ml-2 font-medium">
-                    <li><strong>Pembentukan Tim:</strong> Guru memilih <span class="text-blue-600">5 orang siswa</span> untuk mengisi masing-masing tim (TIM A & TIM B).</li>
-                    <li><strong>Cara Menjawab:</strong> Kelima siswa berbaris, lalu maju <span class="text-blue-600">secara bergantian (estafet)</span> untuk menekan jawaban di perangkat/layar.</li>
-                    <li><strong>Aturan Main:</strong> Cocokkan angka desimal yang ada di tombol dengan "Target Biner" di layar utama.</li>
-                    <li><strong>Syarat Menang:</strong> Setiap jawaban benar akan memajukan mobil. Tim pertama yang mendapat <span class="text-red-600 font-bold">3 Skor</span> (garis finish) menjadi pemenangnya.</li>
-                    <li><strong>Penalti:</strong> Hati-hati! Jika salah menjawab, mesin mobil akan "Mogok" dan target soal akan langsung diacak ulang.</li>
+                <ol class="list-decimal list-inside space-y-2 ml-2 font-medium">
+                    <li>Pilih <strong>Tingkat Kesulitan</strong> (Mudah 4-bit, Sedang 6-bit, Ahli 8-bit).</li>
+                    <li>Guru membagi 2 tim (TIM A & TIM B) berbaris estafet.</li>
+                    <li>Cocokkan angka desimal di tombol dengan "Target Biner" di layar.</li>
+                    <li>Setiap jawaban benar akan memajukan mobil (<span class="text-red-600 font-bold">+1 Skor dan Animasi Api 🔥</span>).</li>
+                    <li>Hati-hati! Jika salah, mobil "Mogok" dan soal otomatis diacak ulang.</li>
                 </ol>
             </div>
-            <div class="mt-8 pt-4 border-t text-right">
-                <button onclick="closePanduan()" class="bg-slate-800 text-white px-8 py-3 rounded-xl font-bold hover:bg-slate-700 transition-colors">Saya Mengerti, Tutup Panduan</button>
+            <div class="mt-6 pt-4 border-t text-right">
+                <button onclick="closePanduan()" class="bg-slate-800 text-white px-6 py-2 rounded-xl font-bold hover:bg-slate-700">Saya Mengerti</button>
             </div>
         </div>
     </div>
@@ -389,73 +398,70 @@
 
     <!-- Apps Script Instructions Modal -->
     <div id="script-instructions-modal" class="fixed inset-0 bg-black/50 z-[100] hidden items-center justify-center backdrop-blur-sm p-4">
-        <div class="bg-white p-8 rounded-3xl max-w-2xl w-full shadow-2xl modal-animate max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6 border-b pb-4">
-                <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                    <i class="ph-fill ph-google-logo text-blue-500"></i> Cara Menghubungkan ke Google Sheets
+        <div class="bg-white p-6 rounded-3xl max-w-2xl w-full shadow-2xl modal-animate max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                    <i class="ph-fill ph-google-logo text-blue-500"></i> Integrasi Google Sheets
                 </h3>
-                <button onclick="closeAppsScriptInstructions()" class="text-slate-400 hover:text-red-500"><i class="ph ph-x text-2xl"></i></button>
+                <button onclick="closeAppsScriptInstructions()" class="text-slate-400 hover:text-red-500"><i class="ph ph-x text-xl"></i></button>
             </div>
+            <p class="text-sm text-slate-600 mb-4">Masukkan URL Web App dari Google Apps Script untuk merekap nilai ke Google Sheets.</p>
+            <input type="text" id="apps-script-url" placeholder="https://script.google.com/macros/s/..." class="w-full p-3 mb-4 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 text-sm">
             
-            <div class="space-y-4 text-slate-600">
-                <p>Ikuti langkah ini untuk membuat sistem rekap nilai otomatis menggunakan Google Apps Script:</p>
-                <ol class="list-decimal list-inside space-y-3 ml-2">
-                    <li>Buka <a href="https://sheets.google.com" target="_blank" class="text-blue-600 underline font-semibold">Google Sheets</a> dan buat spreadsheet baru (misal: "Rekap Nilai Jaringan Dasar").</li>
-                    <li>Buat header pada baris pertama kolom A, B, C, D: <strong>Nama</strong>, <strong>Materi</strong>, <strong>Nilai</strong>, <strong>Tanggal</strong>.</li>
-                    <li>Klik menu <strong>Ekstensi</strong> > <strong>Apps Script</strong>.</li>
-                    <li>Hapus semua kode yang ada, lalu paste kode di bawah ini:</li>
+            <details class="text-sm text-slate-600 bg-slate-50 p-4 rounded-xl border">
+                <summary class="font-bold text-slate-800 cursor-pointer">Cara Membuat Script (Klik)</summary>
+                <ol class="list-decimal list-inside space-y-2 mt-3 ml-2">
+                    <li>Buat Google Sheets baru (Header: Nama, Materi, Nilai, Tanggal).</li>
+                    <li>Klik <strong>Ekstensi</strong> > <strong>Apps Script</strong>. Paste kode ini:</li>
                 </ol>
-                
-                <div class="bg-slate-800 text-green-400 p-4 rounded-xl text-sm font-mono overflow-x-auto relative">
-                    <button onclick="copyScriptCode()" class="absolute top-2 right-2 bg-slate-700 hover:bg-slate-600 text-white p-2 rounded text-xs">Copy</button>
-                    <pre id="script-code">function doPost(e) {
+                <div class="bg-slate-800 text-green-400 p-3 mt-2 rounded text-xs font-mono overflow-x-auto">
+                    <pre>function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var nama = e.parameter.nama;
-  var materi = e.parameter.materi;
-  var nilai = e.parameter.nilai;
-  var tanggal = e.parameter.tanggal;
-  
-  sheet.appendRow([nama, materi, nilai, tanggal]);
-  
-  return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
+  sheet.appendRow([e.parameter.nama, e.parameter.materi, e.parameter.nilai, e.parameter.tanggal]);
+  return ContentService.createTextOutput("Success");
 }</pre>
                 </div>
-                
-                <ol class="list-decimal list-inside space-y-3 ml-2" start="5">
-                    <li>Klik tombol <strong>Simpan</strong> (ikon disket).</li>
-                    <li>Klik tombol <strong>Terapkan (Deploy)</strong> > <strong>Deployment Baru</strong>.</li>
-                    <li>Pilih jenis <strong>Aplikasi Web (Web App)</strong>.</li>
-                    <li>Beri deskripsi. Pada bagian <em>"Yang memiliki akses"</em>, pilih <strong>"Siapa saja (Anyone)"</strong>.</li>
-                    <li>Klik <strong>Terapkan</strong>. Berikan izin otorisasi jika diminta (Lanjutkan > Buka tidak aman).</li>
-                    <li>Copy <strong>URL Aplikasi Web</strong> yang muncul, lalu paste ke kotak input di halaman Kuis MPI ini.</li>
-                </ol>
-            </div>
-            <div class="mt-8 pt-4 border-t text-right">
-                <button onclick="closeAppsScriptInstructions()" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700">Saya Mengerti</button>
+                <p class="mt-2">Simpan > Terapkan > Deployment Baru (Aplikasi Web) > Akses: Siapa Saja > Copy URL ke kotak di atas.</p>
+            </details>
+            <div class="mt-6 text-right">
+                <button onclick="closeAppsScriptInstructions()" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-blue-700">Simpan & Tutup</button>
             </div>
         </div>
     </div>
 
+    <!-- MAIN JAVASCRIPT -->
     <script>
-        // --- SOUND EFFECTS (Tone.js) ---
+        // --- 1. SOUND & BGM SYSTEM (Tone.js) ---
         let synth;
         let isToneStarted = false;
+        
+        // BGM variables
+        let bgmPlayer;
+        let isBgmPlaying = false;
 
         async function initAudio() {
             if (!isToneStarted) {
                 await Tone.start();
                 synth = new Tone.Synth().toDestination();
                 synth.volume.value = -10;
+                
+                // Create a simple looping background track
+                bgmPlayer = new Tone.PolySynth(Tone.Synth).toDestination();
+                bgmPlayer.volume.value = -25; // Soft volume
+                const pattern = new Tone.Pattern(function(time, note){
+                    bgmPlayer.triggerAttackRelease(note, "8n", time);
+                }, ["C4", "E4", "G4", "A4", "G4", "E4"], "upDown");
+                pattern.playbackRate = 0.5;
+                pattern.start(0);
+                
                 isToneStarted = true;
             }
         }
 
         document.body.addEventListener('click', initAudio, { once: true });
-        document.body.addEventListener('touchstart', initAudio, { once: true });
 
         function playSound(type) {
             if (!isToneStarted || !synth) return;
-            
             const now = Tone.now();
             try {
                 switch (type) {
@@ -463,200 +469,164 @@
                     case 'bulb-on': synth.triggerAttackRelease("E5", "16n"); break;
                     case 'bulb-off': synth.triggerAttackRelease("A4", "32n"); break;
                     case 'reset': synth.triggerAttackRelease("G3", "8n"); break;
-                    case 'gas': 
-                        synth.triggerAttackRelease("C2", "4n");
-                        setTimeout(() => synth.triggerAttackRelease("E2", "8n"), 150);
-                        break;
-                    case 'correct':
-                        synth.triggerAttackRelease("C5", "16n", now);
-                        synth.triggerAttackRelease("E5", "16n", now + 0.1);
-                        synth.triggerAttackRelease("G5", "8n", now + 0.2);
-                        break;
-                    case 'wrong':
-                        synth.triggerAttackRelease("G3", "8n", now);
-                        synth.triggerAttackRelease("C3", "4n", now + 0.2);
-                        break;
-                    case 'applause': // Fanfare Kemenangan
-                        synth.triggerAttackRelease("C5", "8n", now);
-                        synth.triggerAttackRelease("E5", "8n", now + 0.15);
-                        synth.triggerAttackRelease("G5", "8n", now + 0.3);
-                        synth.triggerAttackRelease("C6", "2n", now + 0.45);
-                        break;
+                    case 'gas': synth.triggerAttackRelease("C2", "4n"); setTimeout(() => synth.triggerAttackRelease("E2", "8n"), 150); break;
+                    case 'correct': synth.triggerAttackRelease("C5", "16n", now); synth.triggerAttackRelease("E5", "16n", now+0.1); synth.triggerAttackRelease("G5", "8n", now+0.2); break;
+                    case 'wrong': synth.triggerAttackRelease("G3", "8n", now); synth.triggerAttackRelease("C3", "4n", now+0.2); break;
+                    case 'applause': synth.triggerAttackRelease("C5", "8n", now); synth.triggerAttackRelease("E5", "8n", now+0.15); synth.triggerAttackRelease("G5", "8n", now+0.3); synth.triggerAttackRelease("C6", "2n", now+0.45); break;
                 }
-            } catch (e) {
-                console.log("Audio playback issue:", e);
-            }
+            } catch (e) {}
         }
 
-        // --- UTILS & NAVIGATION ---
+        function toggleBGM() {
+            initAudio(); // ensure initialized
+            const btn = document.getElementById('bgm-btn');
+            if (isBgmPlaying) {
+                Tone.Transport.pause();
+                btn.innerHTML = '<i class="ph ph-speaker-slash"></i>';
+                btn.classList.remove('bg-green-100', 'text-green-600');
+                btn.classList.add('bg-slate-100', 'text-slate-500');
+            } else {
+                Tone.Transport.start();
+                btn.innerHTML = '<i class="ph ph-speaker-high"></i>';
+                btn.classList.remove('bg-slate-100', 'text-slate-500');
+                btn.classList.add('bg-green-100', 'text-green-600');
+            }
+            isBgmPlaying = !isBgmPlaying;
+        }
+
+        // --- 2. CONFETTI EFFECT ---
+        function fireConfetti() {
+            var duration = 2 * 1000;
+            var end = Date.now() + duration;
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, zIndex: 9999 });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, zIndex: 9999 });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+        }
+
+        // --- 3. UTILS & NAVIGATION ---
         const sections = ['materi', 'simulasi', 'game', 'kuis'];
-        
         function navigate(target) {
             sections.forEach(sec => {
-                const el = document.getElementById(`sec-${sec}`);
-                el.classList.add('section-hidden');
-                el.classList.remove('block', 'flex'); // Hapus class display aktif sebelumnya
-                
+                document.getElementById(`sec-${sec}`).classList.add('section-hidden');
+                document.getElementById(`sec-${sec}`).classList.remove('block', 'flex');
                 document.getElementById(`nav-${sec}`).classList.remove('bg-white', 'text-blue-600', 'shadow-sm');
                 document.getElementById(`nav-${sec}`).classList.add('text-slate-500');
             });
-            
             const targetEl = document.getElementById(`sec-${target}`);
             targetEl.classList.remove('section-hidden');
-            
-            if(target === 'simulasi' || target === 'game') {
-                targetEl.classList.add('flex');
-            } else {
-                targetEl.classList.add('block');
-            }
-            
+            targetEl.classList.add(target === 'simulasi' || target === 'game' ? 'flex' : 'block');
             document.getElementById(`nav-${target}`).classList.add('bg-white', 'text-blue-600', 'shadow-sm');
             document.getElementById(`nav-${target}`).classList.remove('text-slate-500');
-
             if (target === 'game' && !gameActive) initGame();
+            if (target === 'kuis') renderLeaderboard();
         }
 
-        // --- SIMULASI LOGIC ---
+        // --- 4. SIMULASI LOGIC ---
         const bitValues = [128, 64, 32, 16, 8, 4, 2, 1];
         let simState = [0,0,0,0,0,0,0,0];
-
         function renderSimul() {
             const container = document.getElementById('sim-container');
             container.innerHTML = '';
-            
-            let total = 0;
-            let activeTerms = [];
-
+            let total = 0; let activeTerms = [];
             simState.forEach((val, idx) => {
-                if (val === 1) {
-                    total += bitValues[idx];
-                    activeTerms.push(bitValues[idx]);
-                }
-
+                if (val === 1) { total += bitValues[idx]; activeTerms.push(bitValues[idx]); }
                 const card = document.createElement('div');
-                card.className = `p-4 rounded-2xl flex flex-col items-center justify-between border transition-all cursor-pointer ${
-                    val === 1 
-                    ? 'bg-blue-600/30 border-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.3)]' 
-                    : 'bg-slate-800/50 border-slate-700 opacity-60 hover:opacity-100'
-                }`;
-                card.onclick = () => toggleSimBulb(idx);
-
-                card.innerHTML = `
-                    <span class="text-xs font-mono text-slate-400">Bit ${7-idx}</span>
-                    <div class="my-4 text-4xl transition-transform transform ${val === 1 ? 'scale-125 text-yellow-300 drop-shadow-[0_0_10px_yellow]' : 'text-slate-500'}">
+                card.className = `p-3 md:p-4 rounded-2xl flex flex-col items-center border cursor-pointer transition-all ${val === 1 ? 'bg-blue-600/30 border-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.3)]' : 'bg-slate-800/50 border-slate-700 opacity-60 hover:opacity-100'}`;
+                card.onclick = () => { simState[idx] = simState[idx] === 0 ? 1 : 0; playSound(simState[idx] === 1 ? 'bulb-on' : 'bulb-off'); renderSimul(); };
+                card.innerHTML = `<span class="text-[10px] md:text-xs text-slate-400">Bit ${7-idx}</span>
+                    <div class="my-2 md:my-4 text-3xl md:text-4xl transform ${val === 1 ? 'scale-125 text-yellow-300' : 'text-slate-500'}">
                         <i class="ph-fill ${val === 1 ? 'ph-lightbulb' : 'ph-lightbulb-slash'}"></i>
                     </div>
-                    <span class="text-xl font-bold font-mono mb-2">${bitValues[idx]}</span>
-                    <div class="w-full py-2 rounded-lg font-mono text-xs font-bold text-center ${val === 1 ? 'bg-yellow-400 text-slate-950' : 'bg-slate-700 text-slate-300'}">
-                        ${val}
-                    </div>
-                `;
+                    <span class="text-sm md:text-xl font-bold font-mono mb-2">${bitValues[idx]}</span>
+                    <div class="w-full py-1 md:py-2 rounded text-xs text-center ${val === 1 ? 'bg-yellow-400 text-slate-900 font-bold' : 'bg-slate-700 text-slate-300'}">${val}</div>`;
                 container.appendChild(card);
             });
-
             document.getElementById('sim-total').innerText = total;
             document.getElementById('sim-formula').innerText = activeTerms.length > 0 ? activeTerms.join(' + ') + ' = ' + total : '0';
         }
+        function resetSim() { simState = [0,0,0,0,0,0,0,0]; renderSimul(); }
 
-        function toggleSimBulb(idx) {
-            simState[idx] = simState[idx] === 0 ? 1 : 0;
-            playSound(simState[idx] === 1 ? 'bulb-on' : 'bulb-off');
-            renderSimul();
-        }
+        // --- 5. GAME MULTIPLAYER (WITH DIFFICULTY & BOOST) ---
+        let currentTargetDesimal = 0; let currentOptions = []; let p1Score = 0; let p2Score = 0; let gameActive = false; const WIN_SCORE = 3; 
+        let currentDifficulty = 8; // default 8-bit
 
-        function resetSim() {
-            simState = [0,0,0,0,0,0,0,0];
-            playSound('reset');
-            renderSimul();
-        }
-
-        // --- GAME MULTIPLAYER LOGIC ---
-        let currentTargetBiner = "";
-        let currentTargetDesimal = 0;
-        let currentOptions = []; 
-        let p1Score = 0;
-        let p2Score = 0;
-        let gameActive = false;
-        const WIN_SCORE = 3; 
-
-        function openPanduan() {
+        function changeDifficulty() {
             playSound('click');
-            document.getElementById('panduan-modal').classList.remove('hidden');
-            document.getElementById('panduan-modal').classList.add('flex');
-        }
-
-        function closePanduan() {
-            playSound('click');
-            document.getElementById('panduan-modal').classList.add('hidden');
-            document.getElementById('panduan-modal').classList.remove('flex');
+            const radios = document.getElementsByName('difficulty');
+            for (let r of radios) { if (r.checked) currentDifficulty = parseInt(r.value); }
+            initGame();
         }
 
         function initGame() {
-            p1Score = 0;
-            p2Score = 0;
-            gameActive = true;
-            updateCars();
-            document.getElementById('p1-score-txt').innerText = `Skor: ${p1Score} / ${WIN_SCORE}`;
-            document.getElementById('p2-score-txt').innerText = `Skor: ${p2Score} / ${WIN_SCORE}`;
+            p1Score = 0; p2Score = 0; gameActive = true; updateCars();
+            document.getElementById('p1-score-txt').innerText = `Skor: 0 / 3`;
+            document.getElementById('p2-score-txt').innerText = `Skor: 0 / 3`;
             generateNewTarget();
         }
 
         function generateNewTarget() {
-            const bits = Array.from({length: 8}, () => Math.random() > 0.5 ? 1 : 0);
+            // Logic Level Kesulitan (4-bit, 6-bit, 8-bit)
+            const bits = Array.from({length: 8}, (_, i) => {
+                // Misal: bit 0 adalah 128, bit 7 adalah 1. 
+                // Jika diff=4, kita hanya mengacak 4 bit terakhir (indeks 4,5,6,7). Indeks 0,1,2,3 di-nol-kan.
+                if (i < (8 - currentDifficulty)) return 0;
+                return Math.random() > 0.5 ? 1 : 0;
+            });
+            
+            // Hindari jawaban 0 murni agar game tidak error
             if(bits.every(b => b === 0)) bits[7] = 1; 
 
-            currentTargetBiner = bits.join('');
+            // Ciptakan tampilan biner sesuai tingkat kesulitan (hilangkan angka 0 di depan jika mudah)
+            const displayBits = currentDifficulty === 8 ? bits.join('') : bits.slice(8 - currentDifficulty).join('');
+            
             currentTargetDesimal = bits.reduce((acc, val, idx) => acc + (val === 1 ? bitValues[idx] : 0), 0);
 
-            let optionsSet = new Set();
-            optionsSet.add(currentTargetDesimal); 
-            
-            while(optionsSet.size < 4) {
-                let fakeAns = Math.floor(Math.random() * 255);
-                optionsSet.add(fakeAns);
-            }
-            
+            let optionsSet = new Set([currentTargetDesimal]); 
+            const maxVal = currentDifficulty === 4 ? 15 : (currentDifficulty === 6 ? 63 : 255);
+
+            while(optionsSet.size < 4) { optionsSet.add(Math.floor(Math.random() * maxVal) + 1); }
             currentOptions = Array.from(optionsSet).sort(() => Math.random() - 0.5);
 
-            document.getElementById('game-target').innerText = currentTargetBiner;
+            document.getElementById('game-target').innerText = displayBits;
             renderGameControls();
         }
 
         function renderGameControls() {
-            const renderOptions = (containerId, playerNum) => {
-                const container = document.getElementById(containerId);
-                const color = playerNum === 1 ? 'red' : 'blue';
-                
-                container.className = "w-full grid grid-cols-2 gap-4";
-                container.innerHTML = ''; 
-
+            ['p1-controls', 'p2-controls'].forEach((id, index) => {
+                const color = index === 0 ? 'red' : 'blue';
+                const container = document.getElementById(id);
+                container.className = "w-full grid grid-cols-2 gap-3 md:gap-4"; container.innerHTML = ''; 
                 currentOptions.forEach(opt => {
                     const btn = document.createElement('button');
-                    btn.className = `py-6 rounded-xl font-mono font-bold text-3xl text-white bg-${color}-500 hover:bg-${color}-600 border-b-4 border-${color}-700 active:border-b-0 active:translate-y-1 transition-all shadow-md`;
+                    btn.className = `py-4 md:py-6 rounded-xl font-mono font-bold text-2xl md:text-3xl text-white bg-${color}-500 hover:bg-${color}-600 active:scale-95 shadow-md transition-all`;
                     btn.innerText = opt;
-                    btn.onclick = () => checkGameAnswer(playerNum, opt); 
+                    btn.onclick = () => checkGameAnswer(index + 1, opt); 
                     container.appendChild(btn);
                 });
-            };
+            });
+        }
 
-            renderOptions('p1-controls', 1);
-            renderOptions('p2-controls', 2);
+        function animateBoost(playerNum) {
+            const boost = document.getElementById(`p${playerNum}-boost`);
+            boost.style.opacity = '1';
+            setTimeout(() => { boost.style.opacity = '0'; }, 600);
         }
 
         function checkGameAnswer(playerNum, selectedAnswer) {
             if (!gameActive) return;
-            
             playSound('gas');
             const teamName = playerNum === 1 ? 'A' : 'B';
 
             if (selectedAnswer === currentTargetDesimal) {
                 playSound('correct');
+                animateBoost(playerNum); // 🚀 Panggil Animasi Api
+
                 if (playerNum === 1) {
-                    p1Score++;
-                    document.getElementById('p1-score-txt').innerText = `Skor: ${p1Score} / ${WIN_SCORE}`;
+                    p1Score++; document.getElementById('p1-score-txt').innerText = `Skor: ${p1Score} / 3`;
                 } else {
-                    p2Score++;
-                    document.getElementById('p2-score-txt').innerText = `Skor: ${p2Score} / ${WIN_SCORE}`;
+                    p2Score++; document.getElementById('p2-score-txt').innerText = `Skor: ${p2Score} / 3`;
                 }
                 
                 updateCars();
@@ -664,99 +634,73 @@
                 if (p1Score >= WIN_SCORE || p2Score >= WIN_SCORE) {
                     gameActive = false;
                     playSound('applause'); 
-                    setTimeout(() => {
-                        showToast("Balapan Selesai! 🏁", `Luar Biasa! TIM ${teamName} Memenangkan Balapan!`, "🏆");
-                        initGame();
-                    }, 1200);
+                    fireConfetti(); // 🎉 Panggil Confetti
+                    setTimeout(() => { showToast("Balapan Selesai! 🏁", `Luar Biasa! TIM ${teamName} Menang!`, "🏆"); initGame(); }, 1500);
                 } else {
-                    setTimeout(generateNewTarget, 800);
+                    setTimeout(generateNewTarget, 600);
                 }
             } else {
                 playSound('wrong');
-                showToast("Oops! Mesin Mogok 💥", `Jawaban TIM ${teamName} salah! Target biner diacak ulang.`, "🔧");
+                showToast("Mesin Mogok 💥", `Jawaban TIM ${teamName} salah!`, "🔧");
                 generateNewTarget();
             }
         }
 
         function updateCars() {
-            const maxTravel = 88; // Maksimal 88% agar pas di bendera
-            document.getElementById('p1-car').style.left = `calc(2% + ${(p1Score / WIN_SCORE) * maxTravel}%)`;
-            document.getElementById('p2-car').style.left = `calc(2% + ${(p2Score / WIN_SCORE) * maxTravel}%)`;
+            document.getElementById('p1-car').style.left = `calc(2% + ${(p1Score / WIN_SCORE) * 85}%)`;
+            document.getElementById('p2-car').style.left = `calc(2% + ${(p2Score / WIN_SCORE) * 85}%)`;
         }
 
-        // --- KUIS & SERTIFIKAT LOGIC ---
+        // --- 6. KUIS & LEADERBOARD LOGIC ---
         const quizData = [
             { q: "Sistem bilangan yang hanya mengenal angka 0 dan 1 disebut?", options: ["Desimal", "Biner", "Oktal", "Heksadesimal"], answer: 1 },
             { q: "Berapa nilai desimal dari biner 10100000?", options: ["160", "192", "128", "170"], answer: 0 },
-            { q: "Dalam IPv4, satu oktet terdiri dari berapa bit?", options: ["4 bit", "8 bit", "16 bit", "32 bit"], answer: 1 },
-            { q: "Jika semua 8 bit bernilai 1 (11111111), berapakah total nilai desimalnya?", options: ["256", "255", "128", "512"], answer: 1 },
-            { q: "Nilai tempat untuk bit paling kiri dalam 1 oktet (8 bit) adalah?", options: ["1", "64", "128", "256"], answer: 2 }
+            { q: "Satu oktet (1 byte) terdiri dari berapa bit?", options: ["4 bit", "8 bit", "16 bit", "32 bit"], answer: 1 },
+            { q: "Jika bit ke-8 nilainya 128, maka bit ke-7 nilainya berapa?", options: ["64", "32", "256", "16"], answer: 0 },
+            { q: "Nilai maksimal desimal dari 8 bit (11111111) adalah?", options: ["256", "255", "128", "512"], answer: 1 }
         ];
 
-        let currentQuestion = 0;
-        let score = 0;
-        let studentName = "";
+        let currentQuestion = 0; let score = 0; let studentName = "";
 
         function startQuiz() {
             const nameInput = document.getElementById('student-name').value.trim();
-            if (nameInput === "") {
-                showToast("Peringatan", "Silakan masukkan nama lengkap Anda terlebih dahulu.", "⚠️");
-                return;
-            }
-            studentName = nameInput;
-            playSound('click');
+            if (!nameInput) { showToast("Peringatan", "Masukkan nama lengkap Anda.", "⚠️"); return; }
+            studentName = nameInput; playSound('click');
             document.getElementById('quiz-login').classList.add('hidden');
             document.getElementById('quiz-box').classList.remove('hidden');
-            currentQuestion = 0;
-            score = 0;
-            loadQuestion();
+            currentQuestion = 0; score = 0; loadQuestion();
         }
 
         function loadQuestion() {
             const q = quizData[currentQuestion];
-            document.getElementById('quiz-progress').innerText = `Pertanyaan ${currentQuestion + 1} dari ${quizData.length}`;
+            document.getElementById('quiz-progress').innerText = `Pertanyaan ${currentQuestion + 1} dari 5`;
             document.getElementById('quiz-score-tracker').innerText = `Skor: ${score}`;
             document.getElementById('quiz-question').innerText = q.q;
             
-            const optionsContainer = document.getElementById('quiz-options');
-            optionsContainer.innerHTML = '';
-            
-            q.options.forEach((opt, index) => {
+            const opts = document.getElementById('quiz-options'); opts.innerHTML = '';
+            q.options.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.className = "w-full text-left p-4 rounded-xl border-2 border-slate-200 hover:border-blue-500 hover:bg-blue-50 font-medium text-slate-700 transition-all";
                 btn.innerText = opt;
-                btn.onclick = () => handleAnswer(index);
-                optionsContainer.appendChild(btn);
+                btn.onclick = () => {
+                    if (idx === q.answer) { score += 20; playSound('correct'); } else { playSound('wrong'); }
+                    currentQuestion++;
+                    if (currentQuestion < quizData.length) loadQuestion(); else finishQuiz();
+                };
+                opts.appendChild(btn);
             });
-        }
-
-        function handleAnswer(selectedIndex) {
-            const correctIndex = quizData[currentQuestion].answer;
-            if (selectedIndex === correctIndex) {
-                score += 20;
-                playSound('correct');
-            } else {
-                playSound('wrong');
-            }
-
-            currentQuestion++;
-            
-            if (currentQuestion < quizData.length) {
-                loadQuestion();
-            } else {
-                finishQuiz();
-            }
         }
 
         function finishQuiz() {
             document.getElementById('quiz-box').classList.add('hidden');
             document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('final-score-text').innerHTML = `Skor Akhir: <strong class="text-2xl text-blue-600">${score}</strong> / 100`;
             
-            const finalScoreText = document.getElementById('final-score-text');
-            finalScoreText.innerHTML = `Skor Akhir Anda: <strong class="text-2xl text-blue-600">${score} / 100</strong>`;
-            
+            // Simpan ke Leaderboard
+            saveToLeaderboard(studentName, score);
+
             if (score >= 80) {
-                playSound('applause');
+                playSound('applause'); fireConfetti(); // 🎉 Confetti
                 document.getElementById('certificate-box').classList.remove('hidden');
                 document.getElementById('btn-cert').classList.remove('hidden');
                 document.getElementById('cert-name').innerText = studentName;
@@ -765,7 +709,7 @@
                 playSound('wrong');
                 document.getElementById('certificate-box').classList.add('hidden');
                 document.getElementById('btn-cert').classList.add('hidden');
-                finalScoreText.innerHTML += "<br><span class='text-red-500 text-sm'>Nilai Anda belum mencapai KKM (80). Silakan pelajari lagi dan coba kembali.</span>";
+                document.getElementById('final-score-text').innerHTML += "<br><span class='text-red-500 text-sm'>Nilai Anda belum mencapai KKM (80). Ayo coba lagi!</span>";
             }
         }
 
@@ -776,63 +720,60 @@
             document.getElementById('student-name').value = '';
         }
 
-        function downloadCertificate() {
-            playSound('click');
-            window.print();
+        function downloadCertificate() { playSound('click'); window.print(); }
+
+        // --- 7. LEADERBOARD SYSTEM ---
+        function saveToLeaderboard(name, sc) {
+            let lb = JSON.parse(localStorage.getItem('mpi_leaderboard')) || [];
+            lb.push({ name: name, score: sc });
+            lb.sort((a, b) => b.score - a.score);
+            lb = lb.slice(0, 5); // Keep Top 5
+            localStorage.setItem('mpi_leaderboard', JSON.stringify(lb));
+            renderLeaderboard();
         }
 
-        // --- APPS SCRIPT LOGIC ---
-        function showAppsScriptInstructions() {
-            playSound('click');
-            document.getElementById('script-instructions-modal').classList.remove('hidden');
-            document.getElementById('script-instructions-modal').classList.add('flex');
+        function renderLeaderboard() {
+            const lb = JSON.parse(localStorage.getItem('mpi_leaderboard')) || [];
+            const container = document.getElementById('leaderboard-list');
+            if (lb.length === 0) {
+                container.innerHTML = '<div class="text-center text-blue-200 text-sm py-4">Belum ada data. Jadilah yang pertama!</div>';
+                return;
+            }
+            container.innerHTML = lb.map((entry, i) => `
+                <div class="flex justify-between items-center bg-white p-3 rounded-xl shadow-sm text-sm font-bold ${i===0?'border-2 border-yellow-400':''}">
+                    <span class="flex items-center gap-2">
+                        ${i===0 ? '<span class="text-xl">🥇</span>' : i===1 ? '<span class="text-xl">🥈</span>' : i===2 ? '<span class="text-xl">🥉</span>' : `<span class="text-slate-400 w-5 text-center">${i+1}.</span>`}
+                        <span class="truncate max-w-[120px]">${entry.name}</span>
+                    </span>
+                    <span class="text-blue-600 bg-blue-50 px-2 py-1 rounded-md">${entry.score} pts</span>
+                </div>
+            `).join('');
         }
 
-        function closeAppsScriptInstructions() {
-            playSound('click');
-            document.getElementById('script-instructions-modal').classList.add('hidden');
-            document.getElementById('script-instructions-modal').classList.remove('flex');
+        function clearLeaderboard() {
+            if(confirm("Yakin ingin mereset papan peringkat?")) {
+                localStorage.removeItem('mpi_leaderboard');
+                renderLeaderboard();
+            }
         }
 
-        function copyScriptCode() {
-            playSound('click');
-            const code = document.getElementById('script-code').innerText;
-            navigator.clipboard.writeText(code).then(() => {
-                showToast("Tersalin", "Kode Apps Script berhasil disalin ke clipboard!", "📋");
-            });
-        }
+        // --- 8. MODALS & APPS SCRIPT ---
+        function openPanduan() { playSound('click'); document.getElementById('panduan-modal').classList.remove('hidden'); document.getElementById('panduan-modal').classList.add('flex'); }
+        function closePanduan() { playSound('click'); document.getElementById('panduan-modal').classList.add('hidden'); document.getElementById('panduan-modal').classList.remove('flex'); }
+        function showToast(title, msg, icon) { document.getElementById('toast-title').innerText = title; document.getElementById('toast-msg').innerText = msg; document.getElementById('toast-icon').innerText = icon; document.getElementById('toast-modal').classList.remove('hidden'); document.getElementById('toast-modal').classList.add('flex'); }
+        function closeToast() { playSound('click'); document.getElementById('toast-modal').classList.add('hidden'); document.getElementById('toast-modal').classList.remove('flex'); }
+        function showAppsScriptInstructions() { playSound('click'); document.getElementById('script-instructions-modal').classList.remove('hidden'); document.getElementById('script-instructions-modal').classList.add('flex'); }
+        function closeAppsScriptInstructions() { playSound('click'); document.getElementById('script-instructions-modal').classList.add('hidden'); document.getElementById('script-instructions-modal').classList.remove('flex'); }
 
         function sendDataToAppsScript(nama, materi, nilai) {
             const url = document.getElementById('apps-script-url').value.trim();
             if(!url) return; 
-
             const date = new Date().toLocaleString('id-ID');
             const encodedUrl = `${url}?nama=${encodeURIComponent(nama)}&materi=${encodeURIComponent(materi)}&nilai=${nilai}&tanggal=${encodeURIComponent(date)}`;
-            
-            fetch(encodedUrl, { method: 'POST', mode: 'no-cors' })
-                .then(() => console.log("Data berhasil dikirim ke Google Sheets"))
-                .catch(err => console.error("Gagal kirim data", err));
+            fetch(encodedUrl, { method: 'POST', mode: 'no-cors' }).catch(err => console.error(err));
         }
 
-        // --- TOAST NOTIFICATIONS ---
-        function showToast(title, msg, icon) {
-            document.getElementById('toast-title').innerText = title;
-            document.getElementById('toast-msg').innerText = msg;
-            document.getElementById('toast-icon').innerText = icon;
-            document.getElementById('toast-modal').classList.remove('hidden');
-            document.getElementById('toast-modal').classList.add('flex');
-        }
-
-        function closeToast() {
-            playSound('click');
-            document.getElementById('toast-modal').classList.add('hidden');
-            document.getElementById('toast-modal').classList.remove('flex');
-        }
-
-        // INIT
-        window.onload = () => {
-            renderSimul();
-        };
+        window.onload = () => { renderSimul(); renderLeaderboard(); };
     </script>
 </body>
 </html>
