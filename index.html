@@ -18,11 +18,7 @@
             to { opacity: 1; transform: scale(1); }
         }
         .modal-animate { animation: fadeIn 0.2s ease-out forwards; }
-
-        /* Ensure hidden elements are truly hidden, overcoming flex displays */
-        .section-hidden {
-            display: none !important;
-        }
+        .section-hidden { display: none !important; }
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen text-slate-800 flex flex-col justify-between">
@@ -38,69 +34,120 @@
                 <p class="text-sm text-slate-500 font-medium">Biner & IPv4</p>
             </div>
         </div>
-        <nav class="flex gap-2 bg-slate-100 p-1 rounded-2xl">
+        <nav class="flex gap-2 bg-slate-100 p-1 rounded-2xl hidden md:flex">
             <button onclick="playSound('click'); navigate('materi')" id="nav-materi" class="nav-btn bg-white shadow-sm text-blue-600 px-6 py-3 rounded-xl font-semibold hover:text-blue-600 hover:bg-white transition-all">📖 Materi</button>
             <button onclick="playSound('click'); navigate('simulasi')" id="nav-simulasi" class="nav-btn text-slate-500 px-6 py-3 rounded-xl font-semibold hover:text-blue-600 hover:bg-white transition-all">💡 Simulasi</button>
             <button onclick="playSound('click'); navigate('game')" id="nav-game" class="nav-btn text-slate-500 px-6 py-3 rounded-xl font-semibold hover:text-blue-600 hover:bg-white transition-all">🏎️ Biner Ngebut</button>
             <button onclick="playSound('click'); navigate('kuis')" id="nav-kuis" class="nav-btn text-slate-500 px-6 py-3 rounded-xl font-semibold hover:text-blue-600 hover:bg-white transition-all">📝 Kuis</button>
         </nav>
+        <!-- Mobile Menu Placeholder -->
+        <button class="md:hidden p-2 text-slate-600 text-2xl"><i class="ph ph-list"></i></button>
     </header>
 
     <!-- Main Content Area -->
     <main class="flex-1 p-6 md:p-10 overflow-y-auto">
         
-        <!-- SECTION: MATERI -->
+        <!-- SECTION: MATERI (DIROMBAK DAN DILENGKAPI) -->
         <section id="sec-materi" class="max-w-6xl mx-auto space-y-8 pb-20 block">
             <div class="text-center space-y-3">
                 <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Modul Pembelajaran Kelas X</span>
-                <h2 class="text-4xl font-extrabold text-slate-800">Memahami Bilangan Biner & Alamat IPv4</h2>
-                <p class="text-slate-600 max-w-2xl mx-auto">Dasar utama bagaimana komputer berkomunikasi menggunakan sistem bilangan berbasis 2 dan penerapannya pada jaringan komputer.</p>
+                <h2 class="text-4xl font-extrabold text-slate-800">Memahami Bilangan Biner & IPv4</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Pelajari bagaimana komputer memproses angka menggunakan sakelar digital dan bagaimana ia diterapkan pada alamat IP.</p>
             </div>
 
             <!-- Grid Materi -->
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- Card 1: Literasi Biner -->
-                <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex flex-col justify-between">
-                    <div>
-                        <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6">
-                            <i class="ph ph-cpu"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-slate-800 mb-4">1. Konsep Dasar Sistem Biner</h3>
-                        <p class="text-slate-600 leading-relaxed mb-4">
-                            Komputer tidak mengerti angka desimal seperti manusia (0-9). Komputer bekerja menggunakan sirkuit elektronik digital yang hanya mengenal dua keadaan: <strong>Hidup (1)</strong> atau <strong>Mati (0)</strong>. Sistem ini disebut dengan <em>Bilangan Biner</em> (Basis 2).
-                        </p>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm space-y-2">
-                            <p class="font-semibold text-slate-700">💡 Literasi & Numerasi:</p>
-                            <p class="text-slate-600">Setiap digit biner disebut <strong>Bit</strong>. 1 Byte terdiri dari 8 Bit. Nilai tempat dihitung dari kanan ke kiri sebagai perpangkatan 2, yaitu: <strong>128, 64, 32, 16, 8, 4, 2, 1</strong>.</p>
-                        </div>
+            <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+                
+                <!-- Card 1: Konsep Biner -->
+                <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex flex-col">
+                    <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="ph ph-cpu"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">1. Apa itu Bilangan Biner?</h3>
+                    <p class="text-slate-600 leading-relaxed mb-4 flex-1">
+                        Manusia berhitung menggunakan 10 angka (0-9) yang disebut <strong>Desimal</strong>. Namun, komputer hanya memahami dua kondisi kelistrikan: <span class="text-green-600 font-bold">Ada Arus (1)</span> dan <span class="text-red-600 font-bold">Tidak Ada Arus (0)</span>. Sistem dua angka ini disebut <strong>Biner</strong> (Basis 2).
+                    </p>
+                    <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 text-sm">
+                        <p class="text-indigo-800">Setiap satu angka 0 atau 1 disebut <strong>Bit</strong>. Kumpulan dari 8 Bit disebut <strong>1 Byte</strong>.</p>
                     </div>
                 </div>
 
-                <!-- Card 2: Numerasi IPv4 -->
-                <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex flex-col justify-between">
-                    <div>
-                        <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mb-6">
-                            <i class="ph ph-globe-hemisphere-east"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-slate-800 mb-4">2. Alamat IPv4 & Konversi</h3>
-                        <p class="text-slate-600 leading-relaxed mb-4">
-                            IPv4 (Internet Protocol version 4) terdiri dari <strong>32 bit</strong> yang dibagi menjadi 4 oktet (masing-masing 8 bit). Setiap oktet dipisahkan oleh titik (contoh: <code>192.168.1.1</code>).
-                        </p>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm space-y-2">
-                            <p class="font-semibold text-slate-700">🔢 Contoh Konversi Desimal ke Biner:</p>
-                            <p class="text-slate-600">Nilai desimal <strong>192</strong> jika diubah ke biner 8-bit menjadi:</p>
-                            <div class="font-mono bg-white p-2 rounded border text-center font-bold text-blue-600">
-                                11000000 <span class="text-xs font-normal text-slate-500">(128 + 64 + 0 + 0 + 0 + 0 + 0 + 0)</span>
+                <!-- Card 2: Struktur IPv4 -->
+                <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex flex-col">
+                    <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="ph ph-globe-hemisphere-east"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">2. Alamat IPv4</h3>
+                    <p class="text-slate-600 leading-relaxed mb-4 flex-1">
+                        IPv4 (Internet Protocol version 4) adalah alamat untuk perangkat di jaringan komputer. IPv4 terdiri dari <strong>32 bit</strong> yang dibagi menjadi <strong>4 Oktet</strong> (1 oktet = 8 bit), dipisahkan dengan tanda titik.
+                    </p>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm font-mono text-center">
+                        <span class="text-slate-400">Desimal:</span> <span class="font-bold text-lg text-slate-800">192 . 168 . 1 . 10</span><br>
+                        <span class="text-slate-400">Biner:</span> <span class="text-xs text-blue-600">11000000 . 10101000 . 00000001 . 00001010</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Konversi Biner ke Desimal (Full Width) -->
+                <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 md:col-span-2">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">3. Cara Konversi Biner ke Desimal</h3>
+                    <p class="text-slate-600 mb-4">Dalam 1 oktet (8 bit), nilai dihitung dari kanan ke kiri sebagai perpangkatan angka 2. Jika bit bernilai <strong class="text-green-600">1 (Hidup)</strong>, angkanya dijumlahkan. Jika <strong class="text-red-600">0 (Mati)</strong>, nilainya diabaikan.</p>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-center border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-500 text-sm font-bold uppercase tracking-wider">
+                                    <th class="p-3 border-r border-white">Bit ke-8</th><th class="p-3 border-r border-white">Bit ke-7</th><th class="p-3 border-r border-white">Bit ke-6</th><th class="p-3 border-r border-white">Bit ke-5</th><th class="p-3 border-r border-white">Bit ke-4</th><th class="p-3 border-r border-white">Bit ke-3</th><th class="p-3 border-r border-white">Bit ke-2</th><th class="p-3">Bit ke-1</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-blue-50 text-blue-800 font-black text-xl border-b-2 border-white">
+                                    <td class="p-4">128</td><td class="p-4">64</td><td class="p-4">32</td><td class="p-4">16</td><td class="p-4">8</td><td class="p-4">4</td><td class="p-4">2</td><td class="p-4">1</td>
+                                </tr>
+                                <!-- Contoh Soal -->
+                                <tr class="font-mono text-2xl font-bold text-slate-700">
+                                    <td class="p-4 text-green-600">1</td><td class="p-4 text-red-400">0</td><td class="p-4 text-green-600">1</td><td class="p-4 text-red-400">0</td><td class="p-4 text-green-600">1</td><td class="p-4 text-red-400">0</td><td class="p-4 text-red-400">0</td><td class="p-4 text-red-400">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
+                        <p class="text-sm font-bold text-yellow-800 mb-1">Contoh Perhitungan Biner "10101000":</p>
+                        <p class="font-mono text-slate-700">=> (1x128) + 0 + (1x32) + 0 + (1x8) + 0 + 0 + 0</p>
+                        <p class="font-mono text-slate-700">=> 128 + 32 + 8 = <strong class="text-xl text-yellow-600">168</strong></p>
+                    </div>
+                </div>
+
+                <!-- Card 4: Konversi Desimal ke Biner (Full Width) -->
+                <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 md:col-span-2">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">4. Cara Konversi Desimal ke Biner</h3>
+                    <p class="text-slate-600 mb-4">Gunakan metode <strong>Pengurangan dengan Nilai Tempat</strong> (128, 64, 32, 16, 8, 4, 2, 1). Jika angka bisa dikurangi, tulis <strong>1</strong> dan kurangi angkanya. Jika tidak bisa dikurangi, tulis <strong>0</strong>.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-sm">
+                            <p class="font-bold text-slate-800 mb-2">Contoh: Ubah angka <span class="text-blue-600 text-lg">192</span> ke Biner!</p>
+                            <ul class="space-y-2 text-slate-600 font-mono">
+                                <li>192 - <strong>128</strong> = 64 <span class="text-green-600 font-bold ml-2">(Bisa -> Tulis 1)</span></li>
+                                <li>64 - <strong>64</strong> = 0 <span class="text-green-600 font-bold ml-4">(Bisa -> Tulis 1)</span></li>
+                                <li>0 - <strong>32</strong> <span class="text-red-500 font-bold ml-8">(Tidak -> Tulis 0)</span></li>
+                                <li><span class="text-slate-400 italic">Karena sisa sudah 0, bit selanjutnya otomatis 0.</span></li>
+                            </ul>
+                            <div class="mt-4 pt-3 border-t border-slate-200">
+                                <span class="text-slate-500">Hasil Biner:</span> <span class="text-xl font-bold tracking-widest text-slate-800 ml-2">11000000</span>
                             </div>
                         </div>
+                        <div class="flex flex-col justify-center items-center text-center p-4">
+                            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mb-4">
+                                <i class="ph ph-lightbulb"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 mb-2">Paham Konsepnya?</h4>
+                            <p class="text-sm text-slate-500 mb-4">Memahami langkah ini adalah kunci untuk memenangkan permainan "Biner Ngebut" dan menjawab kuis nanti.</p>
+                            <button onclick="playSound('click'); navigate('simulasi')" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-bold shadow-lg shadow-blue-200 transition-all">
+                                Praktikkan di Simulasi <i class="ph ph-arrow-right ml-1"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="text-center pt-8">
-                <button onclick="playSound('click'); navigate('simulasi')" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-xl font-bold shadow-lg shadow-blue-200 transition-all transform hover:-translate-y-1">
-                    Coba Simulasi Sekarang <i class="ph ph-arrow-right ml-2"></i>
-                </button>
             </div>
         </section>
 
